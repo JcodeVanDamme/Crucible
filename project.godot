@@ -15,6 +15,11 @@ run/main_scene="uid://do8nw6wm14m1f"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://game/icon.svg"
 
+[display]
+
+window/size/viewport_width=960
+window/size/viewport_height=540
+
 [input]
 
 cycle_left={

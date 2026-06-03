@@ -1,9 +1,9 @@
 @tool
 extends MeshInstance3D
 
-var outline_shader = preload("res://OutlineShader.gdshader")
-var inactive_material = preload("res://inactive_material.tres")
-var active_material = preload("res://active_material.tres")
+var outline_shader = preload("res://game/OutlineShader.gdshader")
+var inactive_material = preload("res://game/inactive_material.tres")
+var active_material = preload("res://game/active_material.tres")
 var outline_mat : ShaderMaterial
 
 @export var outline_color := Color.YELLOW:

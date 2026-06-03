@@ -1,192 +1,202 @@
 @tool
 extends Node3D
 
-var cubeScene = preload("res://Cube.tscn")
-var num_cube := 0
+var cubeScene = preload("res://game/Cube.tscn")
 
-@export var cube_count := 8:
+@export var cubeCount := 8:
 	set(value):
-		cube_count = value
+		cubeCount = value
+		build_board()
+@export var cubeSpacing := 1.2:
+	set(value):
+		cubeSpacing = value
+		build_board()
+@export var cubeSize := 1.0:
+	set(value):
+		cubeSize = value
 		build_board()
 		
-@export var cube_spacing := 1.2:
-	set(value):
-		cube_spacing = value
-		build_board()
-		
-@export var cube_size := 1.0:
-	set(value):
-		cube_size = value
-		build_board()
-		
-var board_width : float
-var matrix: = {}
-var edge_coords: Array[Vector2] = []
-var edge_index := 0
-var current_coord : Vector2
-var current_dir : Vector2
+var currentCubeID := 0
+var boardWidth : float
+var cubeMatrix: = {}
+var edgeCoords: Array[Vector2] = []
+var currentEdgeIndex := 0
+var currentCoord : Vector2
+var currentDir : Vector2
 var outlined_cube : Cube
+
+func cleanup() -> void:
+	cubeMatrix.clear()
+	edgeCoords.clear()
+	for child in get_children():
+		child.queue_free()
 
 func _enter_tree() -> void:
 	build_board()
 
 func build_board():
 	cleanup()
-	board_width = (cube_count - 1) * cube_spacing
+	boardWidth = (cubeCount - 1) * cubeSpacing
 
-	for i in range(cube_count):
-		for j in range(cube_count):
-			var cube = cubeScene.instantiate()
-			add_child(cube)
-			cube.pos = Vector2(i, j)
-			cube.set_size(cube_size)
+	for i in range(cubeCount):
+		for j in range(cubeCount):
 			
-			update_cube_position(cube)
-
-			"""cube.position = Vector3(
-				x_position,
-				0,
-				z_position
-			)"""
-			matrix.set(
-				Vector2(
-					i,
-					j
-				),
+			var cube = addCube(Vector2(i, j))
+			cubeMatrix.set(
+				Vector2(i,j),
 				cube
 			)
 			
-	build_edge_coords()
+	buildEdgeCoords()
 	
-func build_edge_coords():
-	var max_idx = cube_count - 1
+func addCube(matrixPos : Vector2) -> Cube:
+	var cube = cubeScene.instantiate()
+	add_child(cube)
+	cube.pos = matrixPos
+	cube.setSize(cubeSize)
+	updateCubePosition(cube)
+	return cube
+	
+func buildEdgeCoords():
+	var maxIdx = cubeCount - 1
 
-	# Top row
-	for x in range(cube_count):
-		edge_coords.append(Vector2(x, 0))
+	""" Top row """
+	for x in range(cubeCount):
+		edgeCoords.append(Vector2(x, 0))
 
-	# Right column
-	for y in range(1, max_idx):
-		edge_coords.append(Vector2(max_idx, y))
+	""" Right column """
+	for y in range(1, maxIdx):
+		edgeCoords.append(Vector2(maxIdx, y))
 
-	# Bottom row
-	for x in range(max_idx, -1, -1):
-		edge_coords.append(Vector2(x, max_idx))
+	""" Bottom row """
+	for x in range(maxIdx, -1, -1):
+		edgeCoords.append(Vector2(x, maxIdx))
 
-	# Left column
-	for y in range(max_idx - 1, 0, -1):
-		edge_coords.append(Vector2(0, y))
+	""" Left column """
+	for y in range(maxIdx - 1, 0, -1):
+		edgeCoords.append(Vector2(0, y))
 		
-func update_cube_position(cube : Cube) -> void:
-	var matrix_pos = cube.pos
-	var x_position = (matrix_pos.x * cube_spacing) - (board_width * 0.5)
-	var z_position = (matrix_pos.y * cube_spacing) - (board_width * 0.5)
+func updateCubePosition(cube : Cube) -> void:
+	var matrixPos = cube.pos
+	var xPos = (matrixPos.x * (cubeSize + cubeSpacing)) - (boardWidth * 0.5)
+	var zPos = (matrixPos.y * (cubeSize + cubeSpacing)) - (boardWidth * 0.5)
 	cube.position = Vector3(
-		x_position,
+		xPos,
 		0,
-		z_position
+		zPos
 	)	
 		
-func get_inward_direction() -> Vector2:
-	var max_idx = cube_count - 1
+func getInwardDirection() -> Vector2:
+	var maxIdx = cubeCount - 1
 
 	# Top edge → inward is down (+Z)
-	if current_coord.y == 0:
+	if currentCoord.y == 0:
 		return Vector2(0, 1)
 
 	# Bottom edge → inward is up (-Z)
-	elif current_coord.y == max_idx:
+	elif currentCoord.y == maxIdx:
 		return Vector2(0, -1)
 
 	# Left edge → inward is right (+X)
-	elif current_coord.x == 0:
+	elif currentCoord.x == 0:
 		return Vector2(1, 0)
 
 	# Right edge → inward is left (-X)
-	elif current_coord.x == max_idx:
+	elif currentCoord.x == maxIdx:
 		return Vector2(-1, 0)
 
 	return Vector2.ZERO
 		
-func update_selection(cyclingLeft : bool):
-	matrix.get(current_coord).de_select()
+func updateSelection(cyclingLeft : bool):
+	""" De-Select current Cube """
+	cubeMatrix.get(currentCoord).deSelect()
+	
+	""" Update Edge Index to obtain new Coord using edge Coords """
 	var dir = -1 if cyclingLeft else 1
-	edge_index = wrapi(
-		edge_index + dir,
+	currentEdgeIndex = wrapi(
+		currentEdgeIndex + dir,
 		0,
-		edge_coords.size()
+		edgeCoords.size()
 	)
-	current_coord = edge_coords[edge_index]
-	current_dir = get_inward_direction()
-	matrix.get(current_coord).select()
+	currentCoord = edgeCoords[currentEdgeIndex]
 	
-func activate_cube():
-	var start = current_coord
-	var end_cube : Cube
+	""" Update Direction according to given Edge """
+	currentDir = getInwardDirection()
 	
-	var chain : Array = []
-	var c = start
+	""" Select current Cube """
+	cubeMatrix.get(currentCoord).select()
 	
-	while matrix.has(c):
-		var cube = matrix[c]
+func activateCube():
+	""" Selected Cube is first in Chain """
+	if currentCoord in edgeCoords && !cubeMatrix.get(currentCoord).active:
+		print("First")
+		cubeMatrix.get(currentCoord).setActive(cubeID())
 		
+	else:
+		""" Active Blocks before selected present """
+		var chain = getActiveCubeChain()
+		pushCubes(chain)
+		
+func getActiveCubeChain() -> Array:
+	var chain = []
+	var coord = currentCoord
+	
+	while checkBounds(coord):
+		var cube = cubeMatrix.get(coord)
 		if cube.active:
-			chain.append(c)
-			c += current_dir
+			chain.append(cube)
+			coord += currentDir
 		else:
-			end_cube = cube
 			break
-			
+	return chain
+	
+func pushCubes(chain : Array) -> void:
+	""" Push Cubes in Chain from back to front """
 	for i in range(chain.size() - 1, -1, -1):
-		var cube : Cube = matrix.get(chain[i])
+		var cube = chain.get(i)
+		cube.deSelect()
 		
-		if cube.selected:
-			cube.de_select()
-
-		var old_pos = cube.pos
-		var new_pos = old_pos + current_dir
+		var originalPos = cube.pos
+		var newPos = originalPos + currentDir
 		
-		if checkBounds(new_pos):
-			cube.pos = new_pos
-
-			matrix.erase(old_pos)
-			matrix[new_pos] = cube
-
-			update_cube_position(cube)
+		""" Cube not pushed outside Matrix """
+		if checkBounds(newPos):
+			
+			""" Dereference Matrix Slot which Cube was moved from """
+			cubeMatrix.set(originalPos, null)
+			
+			""" Remove Inactive Cube which active Cube gets moved into """
+			remove_child(cubeMatrix.get(newPos))
+			
+			""" Move Cube into new Position """
+			cubeMatrix.set(newPos, cube)
+			cube.pos = newPos
+			updateCubePosition(cube)
 			
 		else:
-			cube.pos = start
-			matrix.erase(old_pos)
-			matrix[start] = cube
-			update_cube_position(cube)
+			""" Cube pushed out of Matrix; delete and Skip """
+			remove_child(cube)
+			continue
 			
-			return
-
-	if end_cube != null:
-		end_cube.pos = start
-		matrix[start] = end_cube
-
-		update_cube_position(end_cube)
-
-		end_cube.set_active(num_cube)
-		end_cube.select()
-		num_cube += 1
+	""" Append new active Cube at the Front """
+	var startCube = addCube(currentCoord)
+	cubeMatrix.set(currentCoord, startCube)
+	startCube.setActive(cubeID())
+	startCube.select()
 		
+		
+func cubeID() -> int:
+	var id = currentCubeID
+	currentCubeID += 1
+	return id
 		
 func checkBounds(pos) -> bool:
 	if pos.x < 0:
 		return false
-	if pos.x >= cube_count:
+	if pos.x >= cubeCount:
 		return false
 	if pos.y < 0:
 		return false
-	if pos.y >= cube_count:
+	if pos.y >= cubeCount:
 		return false
 	return true
-	
-func cleanup() -> void:
-	matrix.clear()
-	edge_coords.clear()
-	for child in get_children():
-		child.queue_free()
-		

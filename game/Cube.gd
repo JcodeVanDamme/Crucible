@@ -3,6 +3,7 @@ extends Node3D
 class_name Cube
 
 @export var show_outline := false:
+	
 	set(value):
 		show_outline = value
 		if !is_node_ready():
@@ -10,7 +11,7 @@ class_name Cube
 		if value:
 			select()
 		else:
-			de_select()
+			deSelect()
 
 @onready var mesh = $MeshInstance3D
 
@@ -25,9 +26,9 @@ func _ready() -> void:
 		if show_outline:
 			select()
 		else:
-			de_select()
+			deSelect()
 	else:
-		de_select()
+		deSelect()
 		
 func _process(delta: float) -> void:
 	if id != null:
@@ -39,7 +40,7 @@ func _process(delta: float) -> void:
 			mesh.material_override.next_pass = null
 		
 
-func set_active(id : int) -> void:
+func setActive(id : int) -> void:
 	self.id = id
 	mesh.material_override = mesh.active_material.duplicate()
 	active = true
@@ -47,10 +48,10 @@ func set_active(id : int) -> void:
 func select() -> void:
 	selected = true
 	
-func de_select() -> void:
+func deSelect() -> void:
 	selected = false
 	
-func set_size(size : float) -> void:
+func setSize(size : float) -> void:
 	$MeshInstance3D.mesh.size = Vector3(
 		size,
 		size,

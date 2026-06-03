@@ -14,10 +14,10 @@ func _process(delta: float) -> void:
 	
 func checkInput():
 	if Input.is_action_just_pressed("cycle_right"):
-		board.update_selection(false)
+		board.updateSelection(false)
 		
 	elif Input.is_action_just_pressed("cycle_left"):
-		board.update_selection(true)
+		board.updateSelection(true)
 		
 	elif Input.is_action_just_pressed("fire"):
-		board.activate_cube()
+		board.activateCube()

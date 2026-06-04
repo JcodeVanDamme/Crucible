@@ -1,27 +1,33 @@
-[gd_scene load_steps=6 format=3 uid="uid://c15seorxgulws"]
+[gd_scene load_steps=7 format=3 uid="uid://c15seorxgulws"]
 
 [ext_resource type="Script" uid="uid://3bbq827n37hh" path="res://game/cube_mesh.gd" id="1_k3834"]
-[ext_resource type="Script" uid="uid://f133injpaf2l" path="res://game/cube.gd" id="1_vmytl"]
-[ext_resource type="Material" uid="uid://c3arur4hgwr06" path="res://game/inactive_material.tres" id="2_a2kvu"]
+[ext_resource type="Script" uid="uid://f133injpaf2l" path="res://game/Cube.gd" id="1_vmytl"]
+[ext_resource type="Material" uid="uid://cc1gc18lblqe8" path="res://game/cube_material.tres" id="2_8si2q"]
+[ext_resource type="Shader" uid="uid://b8whydvk1se0h" path="res://game/cube_shader.gdshader" id="2_nvenl"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ps7ip"]
-albedo_color = Color(0.4351923, 0.43519226, 0.43519226, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nvenl"]
+render_priority = 0
+shader = ExtResource("2_nvenl")
+shader_parameter/inactive_color = Color(0.5409904, 0.54099053, 0.5409904, 1)
+shader_parameter/active_color = Color(1, 0.55, 0, 1)
+shader_parameter/lane_color = Color(0, 0.99, 0.99, 1)
+shader_parameter/lane_strength = 0.2
+shader_parameter/active = false
+shader_parameter/in_lane = false
 
-[sub_resource type="BoxMesh" id="BoxMesh_jhj05"]
+[sub_resource type="BoxMesh" id="BoxMesh_ps7ip"]
 size = Vector3(2, 2, 2)
 
 [node name="Cube" type="Node3D"]
 script = ExtResource("1_vmytl")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-material_override = SubResource("StandardMaterial3D_ps7ip")
-mesh = SubResource("BoxMesh_jhj05")
-surface_material_override/0 = ExtResource("2_a2kvu")
+material_override = SubResource("ShaderMaterial_nvenl")
+mesh = SubResource("BoxMesh_ps7ip")
+surface_material_override/0 = ExtResource("2_8si2q")
 script = ExtResource("1_k3834")
-outline_color = Color(0.8060001, 0, 0.93, 1)
-outline_size = 0.08
 
 [node name="Label3D" type="Label3D" parent="."]
-transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 1.4, 0)
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 1.7, 0)
 font_size = 167
 outline_size = 48

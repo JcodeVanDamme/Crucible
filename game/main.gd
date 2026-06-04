@@ -5,18 +5,21 @@ extends Node3D
 var selected_material := StandardMaterial3D.new()
 var default_material := StandardMaterial3D.new()
 
-func _ready():
-	pass
+@onready var ui = $CanvasLayer/UI
+
+func _ready() -> void:
+	ui.edge = board.EDGE_NAMES[board.currentEdge]
 	
 func _process(delta: float) -> void:
 	checkInput()
+	pass
 	
-func checkInput():
-	if Input.is_action_just_pressed("cycle_right"):
-		board.updateSelection(false)
+func checkInput():	
+	if Input.is_action_just_pressed("fire"):
+		board.activateCube()
 		
 	elif Input.is_action_just_pressed("cycle_left"):
-		board.updateSelection(true)
+		ui.edge = board.updateEdge(true)
 		
-	elif Input.is_action_just_pressed("fire"):
-		board.activateCube()
+	elif Input.is_action_just_pressed("cycle_right"):
+		ui.edge = board.updateEdge(false)

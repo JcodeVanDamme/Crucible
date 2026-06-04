@@ -15,30 +15,90 @@ var cubeScene = preload("res://game/Cube.tscn")
 	set(value):
 		cubeSize = value
 		build_board()
-		
-		
-var currentCubeID := 0
-var outlined_cube : Cube
-
 var boardWidth : float
+
+enum edges {
+	TOP,
+	RIGHT,
+	BOTTOM,
+	LEFT
+}
+const EDGE_NAMES = {
+	edges.TOP: "TOP",
+	edges.RIGHT: "RIGHT",
+	edges.BOTTOM: "BOTTOM",
+	edges.LEFT: "LEFT"
+}
+
+var currentCubeID := 0
+
 var cubeMatrix: = {}
-var edgeCoords: Array[Vector2] = []
-var currentEdgeIndex := 0
+
 var currentCoord : Vector2
 var currentDir : Vector2
 
+var currentEdge := edges.LEFT
+
+var selectedLane
+var lastLane
+var laneCubes
+
+func _process(delta):
+	updateLane()
+	processLane()
+	updatePushDirection()
+	
+func updateLane() -> void:
+	var hit = get_mouse_hit()
+	if hit == Vector3.INF:
+		return
+
+	var lane = world_to_lane(hit)
+	if lane < 0 || lane >= cubeCount:
+		selectedLane = null
+	else:
+		selectedLane = lane
+
 func cleanup() -> void:
 	cubeMatrix.clear()
-	edgeCoords.clear()
 	for child in get_children():
 		child.queue_free()
+		
+func updateEdge(left : bool) -> String:
+	var dir = -1 if left else 1
+	currentEdge = (currentEdge + dir + 4) % 4
+	return EDGE_NAMES.get(currentEdge)
+	
+func get_mouse_hit() -> Vector3:
+	var cam = get_viewport().get_camera_3d()
+	var mouse = get_viewport().get_mouse_position()
+
+	var origin = cam.project_ray_origin(mouse)
+	var dir = cam.project_ray_normal(mouse)
+
+	var plane = Plane(Vector3.UP, cubeSize)
+
+	var hit = plane.intersects_ray(origin, dir)
+	return hit if hit != null else Vector3.INF
+	
+func world_to_lane(pos: Vector3) -> int:
+	var cell_size = cubeSize + cubeSpacing
+	var local = pos + Vector3(boardWidth * 0.5, 0, boardWidth * 0.5)
+
+	match currentEdge:
+		edges.TOP, edges.BOTTOM:
+			return int(floor(local.x / cell_size))
+		edges.LEFT, edges.RIGHT:
+			return int(floor(local.z / cell_size))
+	
+	return -1
 
 func _enter_tree() -> void:
 	build_board()
 
 func build_board():
 	cleanup()
-	boardWidth = (cubeCount - 1) * (cubeSize + cubeSpacing)
+	boardWidth = cubeCount * (cubeSize + cubeSpacing)
 
 	for i in range(cubeCount):
 		for j in range(cubeCount):
@@ -48,8 +108,54 @@ func build_board():
 				Vector2(i,j),
 				cube
 			)
-			
-	buildEdgeCoords()
+		
+func processLane() -> void:
+	if selectedLane == lastLane:
+		return
+
+	if laneCubes:
+		for c in laneCubes:
+			c.deSelect()
+			c.mesh.shader("in_lane", false)
+		laneCubes = null
+
+	if selectedLane == null:
+		lastLane = null
+		return
+
+	# select new lane
+	var cubes: Array = []
+
+	for i in range(cubeCount):
+		var cube : Cube
+		
+		match currentEdge:
+			edges.LEFT, edges.RIGHT:
+				cube = cubeMatrix.get(Vector2(i, selectedLane))
+				
+			edges.TOP, edges.BOTTOM:
+				cube = cubeMatrix.get(Vector2(selectedLane, i))
+				
+		cube.mesh.shader("in_lane", true)
+		cubes.append(cube)
+
+	laneCubes = cubes
+
+	match currentEdge:
+		edges.TOP:
+			currentCoord = Vector2(selectedLane, 0)
+
+		edges.BOTTOM:
+			currentCoord = Vector2(selectedLane, cubeCount - 1)
+
+		edges.LEFT:
+			currentCoord = Vector2(0, selectedLane)
+
+		edges.RIGHT:
+			currentCoord = Vector2(cubeCount - 1, selectedLane)
+
+	lastLane = selectedLane
+		
 	
 func addCube(matrixPos : Vector2) -> Cube:
 	var cube = cubeScene.instantiate()
@@ -58,25 +164,6 @@ func addCube(matrixPos : Vector2) -> Cube:
 	cube.setSize(cubeSize)
 	updateCubePosition(cube)
 	return cube
-	
-func buildEdgeCoords():
-	var maxIdx = cubeCount - 1
-
-	""" Top row """
-	for x in range(cubeCount):
-		edgeCoords.append(Vector2(x, 0))
-
-	""" Right column """
-	for y in range(1, maxIdx):
-		edgeCoords.append(Vector2(maxIdx, y))
-
-	""" Bottom row """
-	for x in range(maxIdx, -1, -1):
-		edgeCoords.append(Vector2(x, maxIdx))
-
-	""" Left column """
-	for y in range(maxIdx - 1, 0, -1):
-		edgeCoords.append(Vector2(0, y))
 		
 func updateCubePosition(cube : Cube) -> void:
 	var matrixPos = cube.pos
@@ -88,50 +175,20 @@ func updateCubePosition(cube : Cube) -> void:
 		zPos
 	)	
 		
-func getInwardDirection() -> Vector2:
-	var maxIdx = cubeCount - 1
-
-	# Top edge → inward is down (+Z)
-	if currentCoord.y == 0:
-		return Vector2(0, 1)
-
-	# Bottom edge → inward is up (-Z)
-	elif currentCoord.y == maxIdx:
-		return Vector2(0, -1)
-
-	# Left edge → inward is right (+X)
-	elif currentCoord.x == 0:
-		return Vector2(1, 0)
-
-	# Right edge → inward is left (-X)
-	elif currentCoord.x == maxIdx:
-		return Vector2(-1, 0)
-
-	return Vector2.ZERO
-		
-func updateSelection(cyclingLeft : bool):
-	""" De-Select current Cube """
-	cubeMatrix.get(currentCoord).deSelect()
-	
-	""" Update Edge Index to obtain new Coord using edge Coords """
-	var dir = -1 if cyclingLeft else 1
-	currentEdgeIndex = wrapi(
-		currentEdgeIndex + dir,
-		0,
-		edgeCoords.size()
-	)
-	currentCoord = edgeCoords[currentEdgeIndex]
-	
-	""" Update Direction according to given Edge """
-	currentDir = getInwardDirection()
-	
-	""" Select current Cube """
-	cubeMatrix.get(currentCoord).select()
+func updatePushDirection() -> void:
+	match currentEdge:
+		edges.TOP:
+			currentDir = Vector2(0, 1)
+		edges.BOTTOM:
+			currentDir = Vector2(0, -1)
+		edges.LEFT:
+			currentDir = Vector2(1, 0)
+		edges.RIGHT:
+			currentDir = Vector2(-1, 0)
 	
 func activateCube():
 	""" Selected Cube is first in Chain """
-	if currentCoord in edgeCoords && !cubeMatrix.get(currentCoord).active:
-		print("First")
+	if !cubeMatrix.get(currentCoord).active:
 		cubeMatrix.get(currentCoord).setActive(cubeID())
 		
 	else:
@@ -140,16 +197,23 @@ func activateCube():
 		pushCubes(chain)
 		
 func getActiveCubeChain() -> Array:
+	print(currentDir)
+	
 	var chain = []
 	var coord = currentCoord
 	
+	var safeguard = 0
 	while checkBounds(coord):
+		if safeguard == 100:
+			print("ENDLESS")
+			break
 		var cube = cubeMatrix.get(coord)
 		if cube.active:
 			chain.append(cube)
 			coord += currentDir
 		else:
 			break
+		safeguard += 1
 	return chain
 	
 func pushCubes(chain : Array) -> void:

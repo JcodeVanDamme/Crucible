@@ -1,28 +1,10 @@
 @tool
 extends MeshInstance3D
 
-var outline_shader = preload("res://game/outline_shader.gdshader")
-var inactive_material = preload("res://game/inactive_material.tres")
-var active_material = preload("res://game/active_material.tres")
-var outline_mat : ShaderMaterial
-
-@export var outline_color := Color.YELLOW:
-	set(value):
-		outline_color = value
-		outline_mat = make_outline_material()
-		
-@export var outline_size := 0.05:
-	set(value):
-		outline_size = value
-		outline_mat = make_outline_material()
+var mat = preload("res://game/cube_material.tres")
 
 func _enter_tree() -> void:
-	outline_mat = make_outline_material().duplicate()
-	material_override = inactive_material.duplicate()
+	material_override = mat.duplicate()
 
-func make_outline_material() -> ShaderMaterial:
-	var mat := ShaderMaterial.new()
-	mat.shader = outline_shader
-	mat.set_shader_parameter("outline_color", outline_color)
-	mat.set_shader_parameter("outline_size", outline_size)
-	return mat
+func shader(property : String, val : bool) -> void:
+	material_override.set_shader_parameter(property, val)

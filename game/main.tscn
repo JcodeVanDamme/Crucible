@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://do8nw6wm14m1f"]
+[gd_scene load_steps=4 format=3 uid="uid://do8nw6wm14m1f"]
 
 [ext_resource type="Script" uid="uid://dmvncmrah1skb" path="res://game/main.gd" id="1_8gaax"]
-[ext_resource type="Script" uid="uid://ctegvlnmnlq34" path="res://game/board.gd" id="2_2fjjk"]
+[ext_resource type="Script" uid="uid://2hgc6wq0156k" path="res://game/board.gd" id="2_2fjjk"]
+[ext_resource type="PackedScene" uid="uid://cwt2bxtuhioe7" path="res://ui.tscn" id="3_emt18"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_8gaax")
@@ -9,7 +10,7 @@ script = ExtResource("1_8gaax")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.70710677, -0.49999997, 0.49999997, 0, 0.70710677, 0.70710677, -0.70710677, -0.49999997, 0.49999997, 0, 0, 0)
+transform = Transform3D(0.31376043, -0.72403085, 0.6142752, 0.061357964, 0.6610531, 0.7478263, -0.9475176, -0.19694763, 0.25183737, 0, 7.1826344, 0)
 light_energy = 2.0
 shadow_enabled = true
 
@@ -20,6 +21,8 @@ cubeSpacing = 0.1
 cubeSize = 2.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" parent="CanvasLayer" instance=ExtResource("3_emt18")]
 
 [node name="CameraPivot" type="Node3D" parent="."]
 transform = Transform3D(0.7071067, -0.25340435, 0.6601409, 0, 0.9335802, 0.3583679, -0.7071067, -0.25340435, 0.6601409, 18.5, 12, 18.5)

@@ -1,0 +1,34 @@
+[gd_scene load_steps=7 format=3 uid="uid://c15seorxgulws"]
+
+[ext_resource type="Script" uid="uid://f133injpaf2l" path="res://game/Cube.gd" id="1_vmytl"]
+[ext_resource type="Material" uid="uid://c3arur4hgwr06" path="res://game/inactive_material.tres" id="2_a2kvu"]
+[ext_resource type="Shader" uid="uid://2khy8hosfdm" path="res://game/wire_frame_shader.gdshader" id="3_ps7ip"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8si2q"]
+albedo_color = Color(0.4351923, 0.43519226, 0.43519226, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_jhj05"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nvenl"]
+render_priority = 0
+shader = ExtResource("3_ps7ip")
+shader_parameter/outline_color = Color(1, 1, 0, 1)
+
+[node name="Cube" type="Node3D"]
+script = ExtResource("1_vmytl")
+
+[node name="BaseMesh" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_8si2q")
+mesh = SubResource("BoxMesh_jhj05")
+surface_material_override/0 = ExtResource("2_a2kvu")
+
+[node name="OutlineMesh" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("BoxMesh_jhj05")
+surface_material_override/0 = SubResource("ShaderMaterial_nvenl")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 1.4, 0)
+font_size = 167
+outline_size = 48

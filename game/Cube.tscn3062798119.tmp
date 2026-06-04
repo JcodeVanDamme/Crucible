@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://c15seorxgulws"]
+
+[ext_resource type="Script" uid="uid://f133injpaf2l" path="res://game/Cube.gd" id="1_vmytl"]
+[ext_resource type="Material" uid="uid://c5qselasa11g6" path="res://game/cube_material.tres" id="2_8si2q"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8si2q"]
+albedo_color = Color(0.4351923, 0.43519226, 0.43519226, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_jhj05"]
+size = Vector3(2, 2, 2)
+
+[node name="Cube" type="Node3D"]
+script = ExtResource("1_vmytl")
+
+[node name="BaseMesh" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_8si2q")
+mesh = SubResource("BoxMesh_jhj05")
+surface_material_override/0 = ExtResource("2_8si2q")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 1.4, 0)
+font_size = 167
+outline_size = 48

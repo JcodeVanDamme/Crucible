@@ -1,0 +1,50 @@
+[gd_scene load_steps=9 format=3 uid="uid://c15seorxgulws"]
+
+[ext_resource type="Material" uid="uid://c3arur4hgwr06" path="res://game/inactive_material.tres" id="2_a2kvu"]
+[ext_resource type="Shader" uid="uid://2khy8hosfdm" path="res://game/wire_frame_shader.gdshader" id="4_nvenl"]
+
+[sub_resource type="GDScript" id="GDScript_8si2q"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8si2q"]
+albedo_color = Color(0.4351923, 0.43519226, 0.43519226, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_jhj05"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="GDScript" id="GDScript_ps7ip"]
+script/source = "@tool
+extends MeshInstance3D
+
+var inactiveMaterial = preload(\"res://game/inactive_material.tres\")
+var activeMaterial = preload(\"res://game/active_material.tres\")
+
+func _enter_tree() -> void:
+	material_override = inactiveMaterial.duplicate()
+"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nvenl"]
+albedo_color = Color(0.4351923, 0.43519226, 0.43519226, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c4kuf"]
+render_priority = 0
+shader = ExtResource("4_nvenl")
+shader_parameter/outlineColor = Color(1, 1, 0, 1)
+
+[node name="Cube" type="Node3D"]
+script = SubResource("GDScript_8si2q")
+
+[node name="BaseMesh" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_8si2q")
+mesh = SubResource("BoxMesh_jhj05")
+surface_material_override/0 = ExtResource("2_a2kvu")
+script = SubResource("GDScript_ps7ip")
+
+[node name="SelectionMesh" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_nvenl")
+mesh = SubResource("BoxMesh_jhj05")
+surface_material_override/0 = SubResource("ShaderMaterial_c4kuf")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 1.4, 0)
+font_size = 167
+outline_size = 48

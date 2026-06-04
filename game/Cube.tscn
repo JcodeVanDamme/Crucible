@@ -1,29 +1,20 @@
-[gd_scene load_steps=8 format=3 uid="uid://c15seorxgulws"]
+[gd_scene load_steps=6 format=3 uid="uid://c15seorxgulws"]
 
-[ext_resource type="Script" uid="uid://3bbq827n37hh" path="res://game/CubeMesh.gd" id="1_k3834"]
-[ext_resource type="Script" uid="uid://f133injpaf2l" path="res://game/Cube.gd" id="1_vmytl"]
+[ext_resource type="Script" uid="uid://3bbq827n37hh" path="res://game/cube_mesh.gd" id="1_k3834"]
+[ext_resource type="Script" uid="uid://f133injpaf2l" path="res://game/cube.gd" id="1_vmytl"]
 [ext_resource type="Material" uid="uid://c3arur4hgwr06" path="res://game/inactive_material.tres" id="2_a2kvu"]
-[ext_resource type="Shader" uid="uid://q5pj176y0smr" path="res://game/OutlineShader.gdshader" id="2_nvenl"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_nvenl"]
-render_priority = 0
-shader = ExtResource("2_nvenl")
-shader_parameter/outline_color = Color(0.8060001, 0, 0.93, 1)
-shader_parameter/outline_size = 0.02
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c4kuf"]
-next_pass = SubResource("ShaderMaterial_nvenl")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ps7ip"]
 albedo_color = Color(0.4351923, 0.43519226, 0.43519226, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_jhj05"]
 size = Vector3(2, 2, 2)
 
-[node name="Node3D" type="Node3D"]
+[node name="Cube" type="Node3D"]
 script = ExtResource("1_vmytl")
-show_outline = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-material_override = SubResource("StandardMaterial3D_c4kuf")
+material_override = SubResource("StandardMaterial3D_ps7ip")
 mesh = SubResource("BoxMesh_jhj05")
 surface_material_override/0 = ExtResource("2_a2kvu")
 script = ExtResource("1_k3834")

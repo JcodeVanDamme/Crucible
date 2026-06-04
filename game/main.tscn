@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://do8nw6wm14m1f"]
 
-[ext_resource type="Script" uid="uid://dmvncmrah1skb" path="res://game/main.gd" id="1_ig7tw"]
-[ext_resource type="Script" uid="uid://ctegvlnmnlq34" path="res://game/Board.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://dmvncmrah1skb" path="res://game/main.gd" id="1_8gaax"]
+[ext_resource type="Script" uid="uid://ctegvlnmnlq34" path="res://game/board.gd" id="2_2fjjk"]
 
 [node name="Main" type="Node3D"]
-script = ExtResource("1_ig7tw")
+script = ExtResource("1_8gaax")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 
@@ -13,20 +13,16 @@ transform = Transform3D(0.70710677, -0.49999997, 0.49999997, 0, 0.70710677, 0.70
 light_energy = 2.0
 shadow_enabled = true
 
-[node name="BoardRoot" type="Node3D" parent="."]
-script = ExtResource("2_0xm2m")
+[node name="Board" type="Node3D" parent="."]
+script = ExtResource("2_2fjjk")
 cubeCount = 10
 cubeSpacing = 0.1
 cubeSize = 2.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Label" type="Label" parent="CanvasLayer"]
-offset_right = 40.0
-offset_bottom = 23.0
-
 [node name="CameraPivot" type="Node3D" parent="."]
-transform = Transform3D(0.7071067, -0.25340435, 0.6601409, 0, 0.9335802, 0.3583679, -0.7071067, -0.25340435, 0.6601409, 18.5, 7, 18.5)
+transform = Transform3D(0.7071067, -0.25340435, 0.6601409, 0, 0.9335802, 0.3583679, -0.7071067, -0.25340435, 0.6601409, 18.5, 12, 18.5)
 metadata/_edit_group_ = true
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]

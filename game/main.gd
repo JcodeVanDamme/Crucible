@@ -1,7 +1,6 @@
 extends Node3D
 
-@onready var board: Node3D = $BoardRoot
-@onready var info_label: Label = $CanvasLayer/Label
+@onready var board: Node3D = $Board
 
 var selected_material := StandardMaterial3D.new()
 var default_material := StandardMaterial3D.new()

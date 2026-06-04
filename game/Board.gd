@@ -16,14 +16,16 @@ var cubeScene = preload("res://game/Cube.tscn")
 		cubeSize = value
 		build_board()
 		
+		
 var currentCubeID := 0
+var outlined_cube : Cube
+
 var boardWidth : float
 var cubeMatrix: = {}
 var edgeCoords: Array[Vector2] = []
 var currentEdgeIndex := 0
 var currentCoord : Vector2
 var currentDir : Vector2
-var outlined_cube : Cube
 
 func cleanup() -> void:
 	cubeMatrix.clear()
@@ -36,7 +38,7 @@ func _enter_tree() -> void:
 
 func build_board():
 	cleanup()
-	boardWidth = (cubeCount - 1) * cubeSpacing
+	boardWidth = (cubeCount - 1) * (cubeSize + cubeSpacing)
 
 	for i in range(cubeCount):
 		for j in range(cubeCount):

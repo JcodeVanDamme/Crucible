@@ -1,7 +1,7 @@
 @tool
 extends MeshInstance3D
 
-var outline_shader = preload("res://game/OutlineShader.gdshader")
+var outline_shader = preload("res://game/outline_shader.gdshader")
 var inactive_material = preload("res://game/inactive_material.tres")
 var active_material = preload("res://game/active_material.tres")
 var outline_mat : ShaderMaterial

@@ -15,12 +15,8 @@ transform = Transform3D(0.31376043, -0.72403085, 0.6142752, 0.061357964, 0.66105
 light_energy = 2.0
 shadow_enabled = true
 
-[node name="BoardLogic" type="Node3D" parent="." node_paths=PackedStringArray("visuals")]
+[node name="BoardLogic" type="Node3D" parent="."]
 script = ExtResource("2_2fjjk")
-visuals = NodePath("../BoardVisuals")
-cubeCount = 10
-cubeSpacing = 0.1
-cubeSize = 2.0
 
 [node name="BoardVisuals" type="Node3D" parent="."]
 script = ExtResource("3_vop5m")

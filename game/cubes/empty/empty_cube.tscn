@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://dmyu6e6rhpmmj"]
+
+[ext_resource type="PackedScene" uid="uid://c15seorxgulws" path="res://game/cubes/base/BaseCube.tscn" id="1_5pdeq"]
+[ext_resource type="Shader" uid="uid://b8whydvk1se0h" path="res://game/cubes/mesh/cube_shader.gdshader" id="2_74oli"]
+[ext_resource type="Script" uid="uid://xkn4r6xh6y3h" path="res://game/cubes/empty/empty_cube.gd" id="2_o0hcq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bxmtv"]
+render_priority = 0
+shader = ExtResource("2_74oli")
+shader_parameter/inactive_color = Color(0.5409904, 0.54099053, 0.5409904, 1)
+shader_parameter/active_color = Color(1, 0.55, 0, 1)
+shader_parameter/lane_color = Color(0, 0.99, 0.99, 1)
+shader_parameter/lane_strength = 0.15
+shader_parameter/active = false
+shader_parameter/in_lane = false
+
+[node name="EmptyCube" instance=ExtResource("1_5pdeq")]
+script = ExtResource("2_o0hcq")
+
+[node name="MeshInstance3D" parent="." index="0"]
+material_override = SubResource("ShaderMaterial_bxmtv")
+
+[node name="Label3D" parent="." index="1"]
+text = "0"

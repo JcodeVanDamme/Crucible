@@ -1,7 +1,7 @@
 @tool
 extends MeshInstance3D
 
-var mat = preload("res://game/cube_material.tres")
+var mat = preload("res://game/cubes/mesh/cube_material.tres")
 
 func _enter_tree() -> void:
 	material_override = mat.duplicate()

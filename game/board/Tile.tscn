@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://dmxix4t30bguh"]
+
+[ext_resource type="Script" uid="uid://l18usfo6qii3" path="res://game/board/tile.gd" id="1_aepou"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nbwxf"]
+albedo_color = Color(0.0816, 0.48, 0.37375998, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_aepou"]
+material = SubResource("StandardMaterial3D_nbwxf")
+size = Vector3(2, 2, 2)
+
+[node name="Slot" type="Node3D"]
+script = ExtResource("1_aepou")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_aepou")

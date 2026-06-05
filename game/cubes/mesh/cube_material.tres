@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cc1gc18lblqe8"]
+
+[ext_resource type="Shader" uid="uid://b8whydvk1se0h" path="res://game/cubes/mesh/cube_shader.gdshader" id="1_tk43t"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_tk43t")
+shader_parameter/cube_color = Color(0, 0, 0, 1)
+shader_parameter/lane_color = Color(0, 0, 0, 1)
+shader_parameter/lane_strength = 0.15
+shader_parameter/active = false
+shader_parameter/in_lane = false

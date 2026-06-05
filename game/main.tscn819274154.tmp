@@ -61,4 +61,3 @@ highlightColor = Color(0.3254902, 0.7607843, 0.83137256, 1)
 [node name="Tiles" type="Node3D" parent="BoardRoot/Visuals"]
 script = ExtResource("7_wjctj")
 tileColor = Color(0.5609549, 0.5609549, 0.56095487, 1)
-highlightColor = Color(0.81966805, 0.62266773, 0.22251245, 1)

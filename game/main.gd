@@ -1,27 +1,22 @@
+@tool
 extends Node3D
 
-@export var dimension := 8:
-	set(value):
-		dimension = value
-@export var spacing := 1.2:
-	set(value):
-		spacing = value
-@export var cubeSize := 1.0:
-	set(value):
-		cubeSize = value
-
-@onready var boardRoot = $Board
-@onready var bLogic : BoardLogic = $Board/Logic
-@onready var bVisuals : BoardVisuals = $Board/Visuals
-
+@onready var boardRoot = $BoardRoot
+@onready var bLogic : BoardLogic = $BoardRoot/Logic
+@onready var bVisuals : BoardVisuals = $BoardRoot/Visuals
 @onready var ui = $CanvasLayer/UI
 
 func _ready() -> void:
-	pass
+	if Engine.is_editor_hint():
+		$BoardRoot.globals_changed.connect(
+			func():
+			$BoardRoot/Logic.build_board()
+			)
+	$BoardRoot/Logic.build_board()
 	
 func _process(delta: float) -> void:
-	checkInput()
-	pass
+	if !Engine.is_editor_hint():
+		checkInput()
 	
 func checkInput():	
 	if Input.is_action_just_pressed("fire"):

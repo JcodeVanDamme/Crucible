@@ -1,22 +1,28 @@
 @tool
 extends Node3D
 
+signal globals_changed
+
 @export var dimension := 8:
 	set(value):
 		dimension = value
-		updateBoardWidth()
+		updateGlobals()
 		
 @export var spacing := 1.2:
 	set(value):
 		spacing = value
-		updateBoardWidth()
+		updateGlobals()
 		
 @export var cubeSize := 1.0:
 	set(value):
 		cubeSize = value
-		updateBoardWidth()
+		updateGlobals()
 		
 var width : float
 		
-func updateBoardWidth() -> void:
-	width = dimension * (cubeSize + spacing)
+func updateGlobals() -> void:
+	Board.dimension = dimension
+	Board.spacing = spacing
+	Board.cubeSize = cubeSize
+	Board.width = dimension * (cubeSize + spacing)
+	globals_changed.emit()

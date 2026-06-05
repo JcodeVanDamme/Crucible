@@ -4,8 +4,7 @@ extends Node3D
 class_name Cube
 
 var cubeData = preload("res://game/cubes/resources/cube_data.gd")
-
-var data : CubeData = cubeData.new()
+var data : CubeData
 
 @abstract
 func spawned()
@@ -23,10 +22,9 @@ func _process(delta: float) -> void:
 	if data.id != null:
 		$Label3D.text = str(data.id)
 		
-func init(id : int, size : float, pos : Vector2) -> void:
-	data.id = id
-	data.pos = pos
-	$MeshInstance3D.mesh.size = Vector3.ONE * size
+func init(data : CubeData) -> void:
+	self.data = data
+	$MeshInstance3D.mesh.size = Vector3.ONE * Board.cubeSize
 
 func setSelect(val : bool) -> void:
 	data.selected = val

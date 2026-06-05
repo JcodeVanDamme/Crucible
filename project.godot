@@ -17,8 +17,8 @@ config/icon="res://game/icon.svg"
 
 [autoload]
 
-Edge="res://game/board/edge_globals.gd"
-Board="*res://game/board/board_root.gd"
+Board="*res://game/board/board_globals.gd"
+Edges="*res://game/board/edges.gd"
 
 [display]
 

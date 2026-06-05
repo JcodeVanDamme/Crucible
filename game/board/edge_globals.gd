@@ -1,6 +1,6 @@
 extends Node
 
-enum Edges {
+"""enum Edges {
 	TOP,
 	RIGHT,
 	BOTTOM,
@@ -15,4 +15,4 @@ const EDGE_NAMES = {
 }
 
 func toString(edge : Edges) -> String:
-	return EDGE_NAMES[edge]
+	return EDGE_NAMES[edge]"""

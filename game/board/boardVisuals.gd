@@ -3,31 +3,46 @@ extends Node3D
 class_name BoardVisuals
 
 var tileScene = preload("res://game/board/tile.tscn")
+var cubeScene = preload("res://game/cubes/active/active_cube.tscn")
 
-var tiles : Array[Array] = []
+var tiles := {}
+var cubes := {}
 
-func initTiles(numTiles : int, size : float, spacing : float) -> void:
+func init() -> void:
 	tiles.clear()
+	cubes.clear()
 
-	for x in range(numTiles):
-		tiles.append([])
-		tiles[x].resize(numTiles)
-		for y in range(numTiles):
+	for x in range(Board.dimension):
+		for y in range(Board.dimension):
 			
-			tiles[x].append(buildTile(x, y, numTiles, size, spacing))
+			tiles.set(Vector2(x,y), spawnTile(x, y))
+			cubes.set(Vector2(x, y), null)
 	
-func buildTile(x : int, y : int, numTiles : int, size : float, spacing : float) -> Node3D:	
+func spawnTile(x : int, y : int) -> Node3D:
 		var tile = tileScene.instantiate()
 		add_child(tile)
-		tile.setSize(size)
+		tile.setSize(Board.cubeSize)
 		
-		var totalWidth = numTiles * (size + spacing)
-		var xPos = (x * (size + spacing)) - (totalWidth * 0.5)
-		var zPos = (y * (size + spacing)) - (totalWidth * 0.5)
+		var xPos = (x * (Board.cubeSize + Board.spacing)) - (Board.width * 0.5)
+		var zPos = (y * (Board.cubeSize + Board.spacing)) - (Board.width * 0.5)
 		
 		tile.position = Vector3(
 			xPos,
-			-((size * 0.5) + spacing),
+			-((Board.cubeSize * 0.5) + Board.spacing),
 			zPos
 		)
 		return tile
+		
+func spawnCube(data : CubeData) -> void:
+	var cube = cubeScene.instantiate()
+	add_child(cube)
+	cube.init(data)
+	cubes.set(data.pos, cube)
+	
+func updateCubePosition(cube : Cube) -> void:
+	var pos = cube.data.pos
+	cube.position = Vector3(
+		(pos.x * (Board.cubeSize + Board.spacing)) - (Board.width * 0.5),
+		0,
+		(pos.y * (Board.cubeSize + Board.spacing)) - (Board.width * 0.5)
+	)

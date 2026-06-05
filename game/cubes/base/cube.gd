@@ -4,6 +4,7 @@ extends Node3D
 class_name Cube
 
 var cubeData = preload("res://game/cubes/resources/cube_data.gd")
+
 var data : CubeData = cubeData.new()
 
 @abstract

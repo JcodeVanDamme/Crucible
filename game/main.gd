@@ -1,10 +1,22 @@
 extends Node3D
 
-@onready var boardLogic : Node3D = $BoardLogic
+@export var dimension := 8:
+	set(value):
+		dimension = value
+@export var spacing := 1.2:
+	set(value):
+		spacing = value
+@export var cubeSize := 1.0:
+	set(value):
+		cubeSize = value
+
+@onready var boardRoot = $Board
+@onready var bLogic : BoardLogic = $Board/Logic
+@onready var bVisuals : BoardVisuals = $Board/Visuals
+
 @onready var ui = $CanvasLayer/UI
 
 func _ready() -> void:
-	#ui.edge = Edge.toString(board.currentEdge)
 	pass
 	
 func _process(delta: float) -> void:
@@ -13,10 +25,10 @@ func _process(delta: float) -> void:
 	
 func checkInput():	
 	if Input.is_action_just_pressed("fire"):
-		boardLogic.activateCube()
+		bLogic.activateCube()
 		
 	elif Input.is_action_just_pressed("cycle_left"):
-		ui.edge = boardLogic.updateEdge(true)
+		ui.edge = bLogic.updateEdge(true)
 		
 	elif Input.is_action_just_pressed("cycle_right"):
-		ui.edge = boardLogic.updateEdge(false)
+		ui.edge = bLogic.updateEdge(false)

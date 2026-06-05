@@ -6,29 +6,26 @@ var emptyCubeScene = preload("res://game/cubes/empty/empty_cube.tscn")
 var activeCubeScene = preload("res://game/cubes/active/active_cube.tscn")
 
 @export var visuals : BoardVisuals
-@export var size := 8:
-	set(value):
-		size = value
-		build_board()
-@export var cubeSpacing := 1.2:
-	set(value):
-		cubeSpacing = value
-		build_board()
-@export var cubeSize := 1.0:
-	set(value):
-		cubeSize = value
-		build_board()
 
-const edge = Edge.Edges
+enum Edges {
+	TOP,
+	RIGHT,
+	BOTTOM,
+	LEFT
+}
 
-var boardWidth : float
 var currentCubeID := 0
-var layout : Array[Array] = []
-var currentEdge := edge.LEFT
-var laneStart : Vector2
+
+var layout := {}
+
+var currentEdge := Edges.LEFT
+
 var selectedLane
 var lastLane
+var laneStart : Vector2
 var laneCubes
+
+signal edge_changed
 
 func _process(delta):
 	if !Engine.is_editor_hint():
@@ -42,7 +39,7 @@ func updateLane() -> void:
 		return
 
 	var lane = world_to_lane(hit)
-	if lane < 0 || lane >= size:
+	if lane < 0 || lane >= Board.dimension:
 		selectedLane = null
 	else:
 		selectedLane = lane
@@ -55,7 +52,17 @@ func cleanup() -> void:
 func updateEdge(left : bool) -> String:
 	var dir = -1 if left else 1
 	currentEdge = (currentEdge + dir + 4) % 4
-	return Edge.toString(currentEdge)
+	
+	match currentEdge:
+		Edges.TOP:
+			return "Top"
+		Edges.RIGHT:
+			return "Right"
+		Edges.BOTTOM:
+			return "Bottom"
+		Edges.LEFT:
+			return "Left"
+	return "Invalid Edge"
 	
 func get_mouse_hit() -> Vector3:
 	var cam = get_viewport().get_camera_3d()
@@ -64,38 +71,35 @@ func get_mouse_hit() -> Vector3:
 	var origin = cam.project_ray_origin(mouse)
 	var dir = cam.project_ray_normal(mouse)
 
-	var plane = Plane(Vector3.UP, cubeSize)
+	var plane = Plane(Vector3.UP, Board.cubeSize)
 
 	var hit = plane.intersects_ray(origin, dir)
 	return hit if hit != null else Vector3.INF
 	
 func world_to_lane(pos: Vector3) -> int:
-	var cell_size = cubeSize + cubeSpacing
-	var local = pos + Vector3(boardWidth * 0.5, 0, boardWidth * 0.5)
+	var cell_size = Board.cubeSize + Board.spacing
+	var local = pos + Vector3(Board.width * 0.5, 0, Board.width * 0.5)
 
 	match currentEdge:
-		edge.TOP, edge.BOTTOM:
+		Edges.TOP, Edges.BOTTOM:
 			return int(floor(local.x / cell_size))
-		edge.LEFT, edge.RIGHT:
+		Edges.LEFT, Edges.RIGHT:
 			return int(floor(local.z / cell_size))
 	
 	return -1
 
 func _enter_tree() -> void:
+	cleanup()
 	build_board()
 
 func build_board():
-	cleanup()
-	boardWidth = size * (cubeSize + cubeSpacing)
-
-	for x in range(size):
-		layout.append([])
-		layout[x].resize(size)
-		for y in range(size):
-			layout[x].append(null)
+	for x in range(Board.dimension):
+		for y in range(Board.dimension):
+			
+			layout.set(Vector2(x, y), null)
 			
 	if visuals:
-		visuals.initTiles(size, cubeSize, cubeSpacing)
+		visuals.init()
 		
 func processLane() -> void:
 	if selectedLane == lastLane:
@@ -127,14 +131,14 @@ func getLaneStart() -> Vector2:
 		return Vector2.ZERO
 		
 	match currentEdge:
-		edge.TOP:
+		Edges.TOP:
 			return Vector2(selectedLane, 0)
-		edge.BOTTOM:
-			return Vector2(selectedLane, size - 1)
-		edge.LEFT:
+		Edges.BOTTOM:
+			return Vector2(selectedLane, Board.dimension - 1)
+		Edges.LEFT:
 			return Vector2(0, selectedLane)
-		edge.RIGHT:
-			return Vector2(size - 1, selectedLane)
+		Edges.RIGHT:
+			return Vector2(Board.dimension - 1, selectedLane)
 			
 	return Vector2.ZERO
 	
@@ -142,14 +146,14 @@ func getLaneStart() -> Vector2:
 func addCube(matrixPos : Vector2) -> Cube:
 	var cube = activeCubeScene.instantiate()
 	add_child(cube)
-	cube.init(cubeID(), cubeSize, matrixPos)
+	cube.init(cubeID(), Board.cubeSize, matrixPos)
 	updateCubePosition(cube)
 	return cube
 		
 func updateCubePosition(cube : Cube) -> void:
 	var matrixPos = cube.pos()
-	var xPos = (matrixPos.x * (cubeSize + cubeSpacing)) - (boardWidth * 0.5)
-	var zPos = (matrixPos.y * (cubeSize + cubeSpacing)) - (boardWidth * 0.5)
+	var xPos = (matrixPos.x * (Board.cubeSize + Board.spacing)) - (Board.width * 0.5)
+	var zPos = (matrixPos.y * (Board.cubeSize + Board.spacing)) - (Board.width * 0.5)
 	cube.position = Vector3(
 		xPos,
 		0,
@@ -158,22 +162,27 @@ func updateCubePosition(cube : Cube) -> void:
 		
 func getPushDirection() -> Vector2:
 	match currentEdge:
-		edge.TOP:
+		Edges.TOP:
 			return Vector2(0, 1)
-		edge.BOTTOM:
+		Edges.BOTTOM:
 			return Vector2(0, -1)
-		edge.LEFT:
+		Edges.LEFT:
 			return Vector2(1, 0)
-		edge.RIGHT:
+		Edges.RIGHT:
 			return Vector2(-1, 0)
 			
 	return Vector2.ZERO
 	
 func activateCube():
 	""" Selected Cube is first in Chain """
-	if layout[laneStart.x][laneStart.y] == null:
+	#if layout[laneStart.x][laneStart.y] == null:
+	if layout.get(laneStart) == null:
 		var cube = addCube(laneStart)
-		layout[laneStart.x][laneStart.y] = cube
+		#layout[laneStart.x][laneStart.y] = cube
+		layout.set(
+			laneStart,
+			cube
+		)
 		
 	else:
 		""" Active Blocks before selected present """
@@ -185,7 +194,8 @@ func getActiveCubeChain() -> Array:
 	var coord = laneStart
 	
 	while checkBounds(coord):
-		var cube = layout[coord.x][coord.y]
+		#var cube = layout[coord.x][coord.y]
+		var cube = layout.get(coord)
 		if cube != null:
 			chain.append(cube)
 			coord += getPushDirection()
@@ -206,13 +216,22 @@ func pushCubes(chain : Array) -> void:
 		if checkBounds(newPos):
 			
 			""" Dereference Matrix Slot which Cube was moved from """
-			layout[originalPos.x][originalPos.y] = null
+			#layout[originalPos.x][originalPos.y] = null
+			layout.set(
+				originalPos,
+				null
+			)
 			
 			""" Remove Inactive Cube which active Cube gets moved into """
-			remove_child(layout[newPos.x][newPos.y])
+			#remove_child(layout[newPos.x][newPos.y])
+			remove_child(layout.get(newPos))
 			
 			""" Move Cube into new Position """
-			layout[newPos.x][newPos.y] = cube
+			#layout[newPos.x][newPos.y] = cube
+			layout.set(
+				newPos,
+				cube
+			)
 			cube.setPos(newPos)
 			updateCubePosition(cube)
 			
@@ -223,7 +242,11 @@ func pushCubes(chain : Array) -> void:
 			
 	""" Append new active Cube at the Front """
 	var startCube = addCube(laneStart)
-	layout[laneStart.x][laneStart.y] = startCube
+	#layout[laneStart.x][laneStart.y] = startCube
+	layout.set(
+		laneStart,
+		startCube
+	)
 	startCube.setSelect(true)
 		
 		
@@ -235,10 +258,10 @@ func cubeID() -> int:
 func checkBounds(pos) -> bool:
 	if pos.x < 0:
 		return false
-	if pos.x >= size:
+	if pos.x >= Board.dimension:
 		return false
 	if pos.y < 0:
 		return false
-	if pos.y >= size:
+	if pos.y >= Board.dimension:
 		return false
 	return true

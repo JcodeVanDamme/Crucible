@@ -29,7 +29,7 @@ func get_mouse_hit() -> Vector3:
 	var origin = cam.project_ray_origin(mouse)
 	var dir = cam.project_ray_normal(mouse)
 
-	var plane = Plane(Vector3.UP, Board.cubeSize)
+	var plane = Plane(Vector3.UP, 0)
 
 	var hit = plane.intersects_ray(origin, dir)
 	return hit if hit != null else Vector3.INF

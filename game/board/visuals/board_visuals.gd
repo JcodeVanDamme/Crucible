@@ -3,13 +3,12 @@ extends Node3D
 class_name BoardVisuals
 
 @onready var cubes = $Cubes as BoardCubes
-@onready var edges = $Edges as BoardEdges
 @onready var tiles = $Tiles as BoardTiles
+@onready var selectionCube = $SelectionCube as BoardSelectionCube
 
 func init() -> void:
 	cubes.init()
 	tiles.buildTiles()
-	edges.buildEdges()
 		
 func spawnCube(data : CubeData) -> void:
 	cubes.spawnCube(data)
@@ -22,3 +21,12 @@ func deleteCube(id : int) -> void:
 	
 func highlightLane(pos : Vector2, dir : Vector2) -> void:
 	tiles.highlightLane(pos, dir)
+
+func clearLaneHighlight() -> void:
+	tiles.clearLaneHighlight()
+
+func previewSelectionCube(pos : Vector2, dir : Vector2) -> void:
+	selectionCube.previewSelectionCube(pos, dir)
+	
+func hideSelectionCube() -> void:
+	selectionCube.hideSelectionCube()

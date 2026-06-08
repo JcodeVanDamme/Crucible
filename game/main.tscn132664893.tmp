@@ -20,6 +20,11 @@ script = ExtResource("1_8gaax")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.31376043, -0.72403085, 0.6142752, 0.061357964, 0.6610531, 0.7478263, -0.9475176, -0.19694763, 0.25183737, 0, 7.1826344, 0)
+light_energy = 2.0
+shadow_enabled = true
+
 [node name="BoardRoot" type="Node3D" parent="."]
 script = ExtResource("3_5un7r")
 dimension = 10
@@ -72,9 +77,3 @@ transform = Transform3D(0.7071068, 0.2534044, -0.660141, 2.7822852e-08, 0.933580
 projection = 1
 size = 18.0
 near = 0.001
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="CameraController/Camera3D"]
-transform = Transform3D(-0.65790915, 0.68214536, 0.31911296, -0.23997834, -0.5915401, 0.76973414, 0.71383893, 0.42983493, 0.5528797, 8.853624e-06, 5.618907, -31.926716)
-light_energy = 2.0
-shadow_enabled = true
-directional_shadow_mode = 0

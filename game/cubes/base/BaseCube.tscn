@@ -1,15 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://c15seorxgulws"]
+[gd_scene load_steps=5 format=3 uid="uid://c15seorxgulws"]
 
+[ext_resource type="Shader" uid="uid://b8whydvk1se0h" path="res://game/cubes/mesh/cube_shader.gdshader" id="1_b36hv"]
 [ext_resource type="Script" uid="uid://3bbq827n37hh" path="res://game/cubes/mesh/cube_mesh.gd" id="1_k3834"]
-[ext_resource type="Material" uid="uid://cc1gc18lblqe8" path="res://game/cubes/mesh/cube_material.tres" id="2_8si2q"]
-[ext_resource type="Shader" uid="uid://b8whydvk1se0h" path="res://game/cubes/mesh/cube_shader.gdshader" id="2_nvenl"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8t66u"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b36hv"]
 render_priority = 0
-shader = ExtResource("2_nvenl")
-shader_parameter/inactive_color = Color(0.5409904, 0.54099053, 0.5409904, 1)
-shader_parameter/active_color = Color(1, 0.55, 0, 1)
-shader_parameter/lane_color = Color(0, 0.99, 0.99, 1)
+shader = ExtResource("1_b36hv")
+shader_parameter/cube_color = Color(0, 0, 0, 1)
+shader_parameter/lane_color = Color(0, 0, 0, 1)
 shader_parameter/lane_strength = 0.15
 shader_parameter/active = false
 shader_parameter/in_lane = false
@@ -20,12 +18,12 @@ size = Vector3(2, 2, 2)
 [node name="Cube" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-material_override = SubResource("ShaderMaterial_8t66u")
+material_override = SubResource("ShaderMaterial_b36hv")
 mesh = SubResource("BoxMesh_ps7ip")
-surface_material_override/0 = ExtResource("2_8si2q")
 script = ExtResource("1_k3834")
 
 [node name="Label3D" type="Label3D" parent="."]
-transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 1.7, 0)
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 1.7, 0)
+billboard = 1
 font_size = 167
 outline_size = 48

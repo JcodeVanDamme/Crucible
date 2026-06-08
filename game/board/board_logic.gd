@@ -27,7 +27,11 @@ func _process(delta):
 			laneStart = getLaneStart()
 			if visuals:
 				visuals.highlightLane(laneStart, getPushDirection())
-		#processLane()
+				visuals.previewSelectionCube(laneStart, getPushDirection())
+		else:
+			if visuals:
+				visuals.clearLaneHighlight()
+				visuals.hideSelectionCube()
 		
 func updateEdge(left : bool) -> String:
 	var dir = -1 if left else 1

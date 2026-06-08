@@ -8,3 +8,5 @@ var spacing : float
 var cubeSize : float
 
 var width : float
+
+var camera : Camera3D

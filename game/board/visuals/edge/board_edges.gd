@@ -2,9 +2,6 @@
 extends Node3D
 class_name BoardEdges
 
-@export var defaultColor : Color
-@export var highlightColor : Color
-
 var tileScene = preload("res://game/board/visuals/tile/Tile.tscn")
 
 func buildEdges() -> void:
@@ -32,7 +29,7 @@ func buildEdges() -> void:
 
 			var mesh := tile.get_child(0) as MeshInstance3D
 			var mat := StandardMaterial3D.new()
-			mat.albedo_color = defaultColor
+			mat.albedo_color = Colors.tileEdgeColor
 			mesh.material_override = mat
 
 			tile.setSize(Board.cubeSize)

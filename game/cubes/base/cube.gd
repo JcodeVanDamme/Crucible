@@ -3,6 +3,9 @@
 extends Node3D
 class_name Cube
 
+@onready var label := $Label3D
+@onready var meshInstance = $MeshInstance3D
+
 var cubeData = preload("res://game/cubes/resources/cube_data.gd")
 var data : CubeData
 
@@ -16,18 +19,15 @@ func moved()
 func destroyed()
 
 func _ready() -> void:
-	$Label3D.text = ""
+	label.text = ""
 			
 func _process(delta: float) -> void:
-	if data.id != null:
-		$Label3D.text = str(data.id)
+	label.look_at(Board.camera.global_position, Vector3.UP)
 		
 func init(data : CubeData) -> void:
 	self.data = data
-	$MeshInstance3D.mesh.size = Vector3.ONE * Board.cubeSize
-
-func setSelect(val : bool) -> void:
-	data.selected = val
+	label.text = str(data.id)
+	meshInstance.mesh.size = Vector3.ONE * Board.cubeSize
 	
 func setPos(pos : Vector2) -> void:
 	data.pos = pos

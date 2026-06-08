@@ -21,10 +21,13 @@ func spawnCube(data : CubeData) -> void:
 func updateCubePosition(id : int) -> void:
 	var cube = cubes.get(id)
 	var pos = cube.data.pos
+	
+	var step = Board.cubeSize + Board.spacing
+	var center_index = (Board.dimension - 1) * 0.5
 	cube.position = Vector3(
-		(pos.x * (Board.cubeSize + Board.spacing)) - (Board.width * 0.5),
+		(pos.x - center_index) * step,
 		0,
-		(pos.y * (Board.cubeSize + Board.spacing)) - (Board.width * 0.5)
+		(pos.y - center_index) * step
 	)
 	
 func deleteCube(id : int) -> void:

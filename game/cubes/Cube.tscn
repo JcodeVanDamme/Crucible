@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://c15seorxgulws"]
+
+[ext_resource type="Script" uid="uid://f133injpaf2l" path="res://game/cubes/cube.gd" id="1_27u2p"]
+
+[sub_resource type="Shader" id="Shader_fooq8"]
+code = "shader_type spatial;
+
+uniform vec4 cube_color : source_color;
+uniform vec4 lane_color : source_color;
+
+uniform float lane_strength = 0.4;
+
+uniform bool active = false;
+uniform bool in_lane;
+
+void fragment() {
+	vec4 color = cube_color;
+	if (in_lane) {
+		color.rgb = mix(
+		color.rgb,
+		lane_color.rgb,
+		lane_color.a * lane_strength
+		);
+	}
+	ALBEDO = color.rgb;
+}
+	"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4u2ki"]
+render_priority = 0
+shader = SubResource("Shader_fooq8")
+shader_parameter/cube_color = Color(0, 0, 0, 1)
+shader_parameter/lane_color = Color(0, 0, 0, 1)
+shader_parameter/lane_strength = 0.15
+shader_parameter/active = false
+shader_parameter/in_lane = false
+
+[sub_resource type="BoxMesh" id="BoxMesh_ps7ip"]
+size = Vector3(2, 2, 2)
+
+[node name="Cube" type="Node3D"]
+script = ExtResource("1_27u2p")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_4u2ki")
+mesh = SubResource("BoxMesh_ps7ip")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 1.7, 0)
+billboard = 1
+font_size = 167
+outline_size = 48

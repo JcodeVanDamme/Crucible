@@ -1,4 +1,5 @@
 extends Node3D
+class_name CameraController
 
 @onready var anchorA = $AnchorA as Node3D
 @onready var anchorB = $AnchorB as Node3D
@@ -29,6 +30,9 @@ func _process(_delta: float) -> void:
 	Board.camera.look_at(Vector3.ZERO, Vector3.UP)
 
 func updateAnchor(step: int) -> void:
+	if moving:
+		return
+		
 	currentAnchor = (currentAnchor + step) % 4
 	if currentAnchor < 0:
 		currentAnchor += 4

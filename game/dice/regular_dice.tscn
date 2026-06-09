@@ -1,0 +1,93 @@
+[gd_scene load_steps=14 format=3 uid="uid://b1ui3atkxb85j"]
+
+[ext_resource type="Script" uid="uid://wbv1asvyd3s" path="res://game/dice/dice.gd" id="2_sntjh"]
+[ext_resource type="Script" uid="uid://ck0k0pc4agvgo" path="res://game/dice/faces/numeric_face.gd" id="4_rcnqa"]
+[ext_resource type="Script" uid="uid://60j0kvh155pm" path="res://game/dice/dice_data.gd" id="5_chw0b"]
+[ext_resource type="ArrayMesh" uid="uid://c8578smpki2do" path="res://resources/starter_3d_dice_packv1.1/starter_3d_dice_pack/dice_white.obj" id="6_68hld"]
+
+[sub_resource type="Resource" id="Resource_5id1c"]
+script = ExtResource("4_rcnqa")
+metadata/_custom_type_script = "uid://ck0k0pc4agvgo"
+
+[sub_resource type="Resource" id="Resource_sntjh"]
+script = ExtResource("4_rcnqa")
+value = 6
+metadata/_custom_type_script = "uid://ck0k0pc4agvgo"
+
+[sub_resource type="Resource" id="Resource_nxkl3"]
+script = ExtResource("4_rcnqa")
+value = 3
+metadata/_custom_type_script = "uid://ck0k0pc4agvgo"
+
+[sub_resource type="Resource" id="Resource_rcnqa"]
+script = ExtResource("4_rcnqa")
+value = 4
+metadata/_custom_type_script = "uid://ck0k0pc4agvgo"
+
+[sub_resource type="Resource" id="Resource_chw0b"]
+script = ExtResource("4_rcnqa")
+value = 5
+metadata/_custom_type_script = "uid://ck0k0pc4agvgo"
+
+[sub_resource type="Resource" id="Resource_68hld"]
+script = ExtResource("4_rcnqa")
+value = 2
+metadata/_custom_type_script = "uid://ck0k0pc4agvgo"
+
+[sub_resource type="Resource" id="Resource_jwqct"]
+script = ExtResource("5_chw0b")
+faceY_UP = SubResource("Resource_rcnqa")
+faceY_DOWN = SubResource("Resource_nxkl3")
+faceZ_NEAR = SubResource("Resource_68hld")
+faceZ_FAR = SubResource("Resource_chw0b")
+faceX_NEAR = SubResource("Resource_sntjh")
+faceX_FAR = SubResource("Resource_5id1c")
+metadata/_custom_type_script = "uid://60j0kvh155pm"
+
+[sub_resource type="Shader" id="Shader_fooq8"]
+code = "shader_type spatial;
+
+uniform vec4 cube_color : source_color;
+uniform vec4 lane_color : source_color;
+
+uniform float lane_strength = 0.4;
+
+uniform bool active = false;
+uniform bool in_lane;
+
+void fragment() {
+	vec4 color = cube_color;
+	if (in_lane) {
+		color.rgb = mix(
+		color.rgb,
+		lane_color.rgb,
+		lane_color.a * lane_strength
+		);
+	}
+	ALBEDO = color.rgb;
+}
+	"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4u2ki"]
+render_priority = 0
+shader = SubResource("Shader_fooq8")
+shader_parameter/cube_color = Color(0, 0, 0, 1)
+shader_parameter/lane_color = Color(0, 0, 0, 1)
+shader_parameter/lane_strength = 0.15
+shader_parameter/active = false
+shader_parameter/in_lane = false
+
+[node name="RegularDice" type="Node3D"]
+script = ExtResource("2_sntjh")
+diceData = SubResource("Resource_jwqct")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.004, 0, 0, 0, 0.004, 0, 0, 0, 0.004, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_4u2ki")
+mesh = ExtResource("6_68hld")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(-4.3711385e-08, -1, -4.3711385e-08, 0, -4.371139e-08, 0.99999994, -0.99999994, 4.371139e-08, 1.9106853e-15, 0, 1.7, 0)
+billboard = 1
+font_size = 167
+outline_size = 48

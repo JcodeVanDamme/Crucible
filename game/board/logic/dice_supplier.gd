@@ -4,9 +4,8 @@ class_name DiceSupplier
 var diceScene = preload("res://game/dice/regular_dice.tscn")
 
 var state : BoardState
-var diceId := 0
 
-signal determinedDie()
+var diceId := 1
 
 func determineDie() -> void:
 	var dice = diceScene.instantiate()
@@ -14,5 +13,4 @@ func determineDie() -> void:
 	diceId += 1
 	
 	state.dices.set(dice.id, dice)
-	state.currentDice = dice
-	determinedDie.emit()
+	state.spawnedDie = dice

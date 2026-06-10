@@ -1,13 +1,15 @@
 extends Node
 class_name TurnManager
 
-@export var board : BoardController
+@export var board : BoardLogic
 @export var state : BoardState
 @export var mouseController : MouseController
+@export var selectionHandler : SelectionHandler
+@export var boardHandler : BoardHandler
 @export var diceSupplier : DiceSupplier
 @export var cameraController : CameraController
-@export var tileRenderer : TileRenderer
-@export var cubeRenderer : CubeRenderer
+@export var boardTiles : BoardTiles
+@export var boardDices : BoardDices
 
 var selectionMade : bool
 
@@ -15,32 +17,35 @@ func _ready() -> void:
 	board.state = state
 	diceSupplier.state = state
 	mouseController.state = state
-	tileRenderer.state = state
-	cubeRenderer.state = state
+	boardTiles.state = state
+	boardDices.state = state
+	boardHandler.state = state
+	
+	selectionHandler.state = state
+	selectionHandler.boardTiles = boardTiles
 	
 	board.buildBoard()
-	cubeRenderer.init()
-	tileRenderer.buildTiles()
+	boardDices.init()
+	boardTiles.buildTiles()
 	
 	board.cubeMoved.connect(func(id : int):
-		cubeRenderer.updateDicePosition(id)
+		boardHandler.moveDie(id)
 		)
 	board.cubeLeftBoard.connect(func(id : int):
-		cubeRenderer.deleteDice(id)
+		boardHandler.deleteDie(id)
 		)
 	board.finished.connect(func():
+		boardHandler.finished()
 		initTurn()
 		)
-	diceSupplier.determinedDie.connect(func():
-		cubeRenderer.spawnCube()
+	mouseController.selectedEdge.connect(func(pos : Vector2):
+		selectionHandler.handleEdgeSelection(pos)
 		)
-	mouseController.selectedNewLane.connect(func():
-		tileRenderer.highlightLane()
-		cubeRenderer.previewCurrentDie()
+	mouseController.selectedInner.connect(func(pos : Vector2):
+		selectionHandler.handleInnerSelection(pos)
 		)
-	mouseController.selectedNoLane.connect(func():
-		tileRenderer.clearLaneHighlight()
-		cubeRenderer.hideDiePreview()
+	mouseController.selectedNone.connect(func():
+		selectionHandler.handleNoSelection()
 		)
 	
 	initTurn()
@@ -50,10 +55,10 @@ func _process(delta: float) -> void:
 	
 func initTurn() -> void:
 	selectionMade = false
-	state.currentDice = null
-	state.laneSelected = false
-	tileRenderer.clearLaneHighlight()
+	state.isLaneSelected = false
+	boardTiles.clearLaneHighlight()
 	diceSupplier.determineDie()
+	boardDices.spawnCube()
 	
 func updateTurn() -> void:
 	if !selectionMade:
@@ -62,22 +67,16 @@ func updateTurn() -> void:
 	
 func checkInput():
 	if Input.is_action_just_pressed("confirm"):
-		if !selectionMade && state.laneSelected:
+		if !selectionMade && state.isLaneSelected:
 			selectionMade = true
-		elif selectionMade && state.laneSelected:
+		elif selectionMade && state.isLaneSelected:
 			board.activateCube()
 			
 	elif Input.is_action_just_pressed("abort") && selectionMade:
 		selectionMade = false
 		
-	if Input.is_action_just_pressed("cycle_left") && !Input.is_action_pressed("alternate"):
-		state.updateEdge(true)
-		
 	elif Input.is_action_just_pressed("cycle_left"):
 		cameraController.updateAnchor(1)
-		
-	if Input.is_action_just_pressed("cycle_right") && !Input.is_action_pressed("alternate"):
-		state.updateEdge(false)
 		
 	elif Input.is_action_just_pressed("cycle_right"):
 		cameraController.updateAnchor(-1)

@@ -7,4 +7,4 @@ var tileMainColor : Color
 		
 var tileEdgeColor : Color
 		
-var highlightColor : Color
+var selectionColor : Color

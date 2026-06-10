@@ -1,0 +1,82 @@
+[gd_scene load_steps=13 format=3 uid="uid://do8nw6wm14m1f"]
+
+[ext_resource type="Script" uid="uid://dmvncmrah1skb" path="res://game/main.gd" id="1_8gaax"]
+[ext_resource type="Script" uid="uid://2hgc6wq0156k" path="res://game/board/logic/board_controller.gd" id="2_2fjjk"]
+[ext_resource type="Script" uid="uid://cp6dpd28ofsq6" path="res://game/board/board_root.gd" id="3_5un7r"]
+[ext_resource type="PackedScene" uid="uid://cwt2bxtuhioe7" path="res://game/ui/ui.tscn" id="3_emt18"]
+[ext_resource type="Script" uid="uid://drbdcbo86015c" path="res://game/board_state.gd" id="5_ioaqv"]
+[ext_resource type="Script" uid="uid://cmqqgfjooodwm" path="res://game/board/logic/dice_supplier.gd" id="6_dp3pf"]
+[ext_resource type="Script" uid="uid://oq1ik3meixhh" path="res://game/board/visuals/cube/cube_renderer.gd" id="6_xkbyp"]
+[ext_resource type="Script" uid="uid://dop6sbn517uwl" path="res://game/board/visuals/tile/tile_renderer.gd" id="7_wjctj"]
+[ext_resource type="Script" uid="uid://cqihgqktbr5rh" path="res://game/mouse_controller.gd" id="9_lx3aj"]
+[ext_resource type="Script" uid="uid://8xqjigptnyhy" path="res://game/selection_handler.gd" id="10_ioaqv"]
+[ext_resource type="Script" uid="uid://b5lmpuejyjnno" path="res://game/camera_controller.gd" id="10_itumj"]
+[ext_resource type="Script" uid="uid://bme0bon4wxdiy" path="res://game/turn_manager.gd" id="12_li27q"]
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_8gaax")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" parent="CanvasLayer" instance=ExtResource("3_emt18")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+
+[node name="BoardRoot" type="Node3D" parent="."]
+script = ExtResource("3_5un7r")
+spacing = 0.1
+cubeSize = 2.0
+cubeColor = Color(0.7554776, 0.66805065, 0.7514257, 1)
+tileMainColor = Color(0.2627451, 0.3137255, 0.28235295, 1)
+tileEdgeColor = Color(0.15965545, 0.19347179, 0.1731891, 1)
+laneHighlightColor = Color(0.9999998, 0.14961061, 0.41560763, 1)
+selectionHighlightColor = Color(0.97, 0.582, 0, 1)
+
+[node name="State" type="Node" parent="BoardRoot"]
+script = ExtResource("5_ioaqv")
+
+[node name="TurnManager" type="Node" parent="BoardRoot" node_paths=PackedStringArray("board", "state", "mouseController", "selectionHandler", "diceSupplier", "cameraController", "tileRenderer", "cubeRenderer")]
+script = ExtResource("12_li27q")
+board = NodePath("../Board")
+state = NodePath("../State")
+mouseController = NodePath("../MouseController")
+selectionHandler = NodePath("../SelectionHandler")
+diceSupplier = NodePath("../DiceSupplier")
+cameraController = NodePath("../CameraController")
+tileRenderer = NodePath("../Visuals/Tiles")
+cubeRenderer = NodePath("../Visuals/Cubes")
+
+[node name="Visuals" type="Node3D" parent="BoardRoot"]
+
+[node name="Cubes" type="Node3D" parent="BoardRoot/Visuals"]
+script = ExtResource("6_xkbyp")
+
+[node name="Tiles" type="Node3D" parent="BoardRoot/Visuals"]
+script = ExtResource("7_wjctj")
+
+[node name="Board" type="Node" parent="BoardRoot"]
+script = ExtResource("2_2fjjk")
+
+[node name="MouseController" type="Node" parent="BoardRoot"]
+script = ExtResource("9_lx3aj")
+
+[node name="SelectionHandler" type="Node" parent="BoardRoot"]
+script = ExtResource("10_ioaqv")
+
+[node name="DiceSupplier" type="Node" parent="BoardRoot"]
+script = ExtResource("6_dp3pf")
+
+[node name="CameraController" type="Node3D" parent="BoardRoot"]
+script = ExtResource("10_itumj")
+
+[node name="Camera3D" type="Camera3D" parent="BoardRoot/CameraController"]
+transform = Transform3D(0.7071068, 0.2534044, -0.660141, 2.7822852e-08, 0.9335804, 0.35836798, 0.7071068, -0.25340447, 0.660141, -22.5, 13.000001, 22.5)
+projection = 1
+size = 18.0
+near = 0.001
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="BoardRoot/CameraController/Camera3D"]
+transform = Transform3D(-0.9017074, 0.42260912, -0.091242015, -0.33728537, -0.5555728, 0.7599852, 0.27048504, 0.71605897, 0.643504, 0, 0, 0)
+light_energy = 2.0
+shadow_enabled = true
+directional_shadow_mode = 0

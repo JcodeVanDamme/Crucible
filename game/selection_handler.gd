@@ -1,0 +1,58 @@
+extends Node
+class_name SelectionHandler
+
+var state : BoardState
+
+var boardTiles : BoardTiles
+
+func handleNoSelection() -> void:
+	resetSelection()
+
+func handleEdgeSelection(pos : Vector2) -> void:
+	resetSelection()
+
+	if pos.y == 0 && pos.x > 0:
+		state.currentEdge = state.Edges.TOP
+		
+	elif pos.y == Board.dimension - 1 && pos.x > 0:
+		state.currentEdge = state.Edges.BOTTOM
+
+	elif pos.y > 0 && pos.x == 0:
+		state.currentEdge = state.Edges.LEFT
+		
+	elif pos.y > 0 && pos.x  == Board.dimension - 1:
+		state.currentEdge = state.Edges.RIGHT
+		
+	state.updatePushDirection()
+	state.selectedLaneStartPos = pos
+		
+	state.selectedDie = state.spawnedDie
+	state.spawnedDie.position = Board.toLocalPos(state.selectedLaneStartPos, 0)
+	state.spawnedDie.visible = true
+	state.spawnedDie.mesh.enableOutline()
+	state.isLaneSelected = true
+	boardTiles.highlightLane()
+
+func handleInnerSelection(pos : Vector2) -> void:
+	resetSelection()
+
+	var id = state.positionalMatrix.get(pos)
+	if id == null:
+		handleNoSelection()
+		return
+		
+	var die = state.dices.get(id) as Dice
+	
+	die.mesh.enableOutline()
+	state.selectedDie = die
+	
+func resetSelection() -> void:
+	state.isLaneSelected = false
+	state.spawnedDie.visible = false
+	state.spawnedDie.mesh.disabelOutline()
+
+	if state.selectedDie:
+		state.selectedDie.mesh.disabelOutline()
+		state.selectedDie = null
+		
+	boardTiles.clearLaneHighlight()

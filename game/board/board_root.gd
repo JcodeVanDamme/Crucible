@@ -25,25 +25,21 @@ signal globals_changed
 	set(value):
 		cubeColor = value
 		Colors.cubeColor = cubeColor
-		globals_changed.emit()
 		
 @export var tileMainColor := Color.GRAY:
 	set(value):
 		tileMainColor = value
 		Colors.tileMainColor = tileMainColor
-		globals_changed.emit()
 		
 @export var tileEdgeColor := Color.GRAY:
 	set(value):
 		tileEdgeColor = value
 		Colors.tileEdgeColor = tileEdgeColor
-		globals_changed.emit()
 		
-@export var highlightColor := Color.HOT_PINK:
+@export var selectionColor := Color.HOT_PINK:
 	set(value):
-		highlightColor = value
-		Colors.highlightColor = highlightColor
-		globals_changed.emit()
+		selectionColor = value
+		Colors.selectionColor = selectionColor
 		
 var width : float
 		

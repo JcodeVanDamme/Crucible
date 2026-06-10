@@ -6,8 +6,10 @@ var state : BoardState
 var corners : Array
 var lastSelectedCell = Vector2(-1, -1)
 
-signal selectedNewLane()
-signal selectedNoLane()
+signal selectionChanged()
+signal selectedEdge(pos : Vector2)
+signal selectedInner(pos : Vector2)
+signal selectedNone()
 
 func _ready() -> void:
 	corners = [
@@ -22,13 +24,16 @@ func updateMouseSelection() -> void:
 	if cell != Vector2(-1, -1) && cell != lastSelectedCell:
 
 		lastSelectedCell = cell
-		updateLaneStart(cell)
 		
+		if onEdge(cell):
+			selectedEdge.emit(cell)
+		else:
+			selectedInner.emit(cell)
+					
 	elif cell == Vector2(-1, -1):
 		
 		lastSelectedCell = null
-		state.laneSelected = false
-		selectedNoLane.emit()
+		selectedNone.emit()
 		
 func getHoveredCell() -> Vector2:
 	var hit = getMouseHit()
@@ -62,36 +67,15 @@ func worldToCell(pos: Vector3) -> Vector2:
 
 	var cell = Vector2(x, y)
 		
-	if valid(cell):
-		return cell
-	else:
+	if corners.has(cell):
 		return Vector2(-1, -1)
 	
-func valid(pos: Vector2) -> bool:
-	if corners.has(pos):
-		return false
+	return cell
 	
+func onEdge(pos : Vector2) -> bool:
 	return (
-		pos.x == 0
-		|| pos.x == Board.dimension - 1
-		|| pos.y == 0
-		|| pos.y == Board.dimension - 1
+		pos.x == 0 ||
+		pos.x == Board.dimension - 1 ||
+		pos.y == 0 ||
+		pos.y == Board.dimension - 1
 	)
-	
-func updateLaneStart(pos : Vector2) -> void:
-	if pos.y == 0 && pos.x > 0:
-		state.selectedEdge = state.Edges.TOP
-		
-	elif pos.y == Board.dimension - 1 && pos.x > 0:
-		state.selectedEdge = state.Edges.BOTTOM
-
-	elif pos.y > 0 && pos.x == 0:
-		state.selectedEdge = state.Edges.LEFT
-		
-	elif pos.y > 0 && pos.x  == Board.dimension - 1:
-		state.selectedEdge = state.Edges.RIGHT
-		
-	state.updatePushDirection()
-	state.laneStart = pos
-	state.laneSelected = true
-	selectedNewLane.emit()

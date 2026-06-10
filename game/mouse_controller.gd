@@ -3,32 +3,40 @@ extends Node
 class_name MouseController
 
 var state : BoardState
-
-var lastSelectedLane := -1
+var corners : Array
+var lastSelectedCell = Vector2(-1, -1)
 
 signal selectedNewLane()
 signal selectedNoLane()
 
+func _ready() -> void:
+	corners = [
+		Vector2(0, 0),
+		Vector2(0, Board.dimension - 1),
+		Vector2(Board.dimension - 1, 0),
+		Vector2(Board.dimension - 1, Board.dimension - 1)
+	]
+
 func updateMouseSelection() -> void:
-	var lane = getLane()
-	if lane != lastSelectedLane:
-		lastSelectedLane = lane
-		state.selectedLane = lane
-		state.laneStart = getLaneStart()
-		selectedNewLane.emit()
-	elif lane == -1:
+	var cell = getHoveredCell()
+	if cell != Vector2(-1, -1) && cell != lastSelectedCell:
+
+		lastSelectedCell = cell
+		updateLaneStart(cell)
+		
+	elif cell == Vector2(-1, -1):
+		
+		lastSelectedCell = null
+		state.laneSelected = false
 		selectedNoLane.emit()
-
-func getLane() -> int:
+		
+func getHoveredCell() -> Vector2:
 	var hit = getMouseHit()
-	if hit == Vector3.INF:
-		return -1
 
-	var lane = worldToLane(hit)
-	if lane < 0 || lane >= Board.dimension:
-		return -1
-	else:
-		return lane
+	if hit == Vector3.INF:
+		return Vector2(-1, -1)
+
+	return worldToCell(hit)
 		
 func getMouseHit() -> Vector3:
 	var cam = get_viewport().get_camera_3d()
@@ -42,26 +50,48 @@ func getMouseHit() -> Vector3:
 	var hit = plane.intersects_ray(origin, dir)
 	return hit if hit != null else Vector3.INF
 	
-func worldToLane(pos: Vector3) -> int:
-	var cell_size = Board.cubeSize + Board.spacing
+func worldToCell(pos: Vector3) -> Vector2:
+	var cellSize = Board.cubeSize + Board.spacing
 	var local = pos + Vector3(Board.width * 0.5, 0, Board.width * 0.5)
 
-	match state.selectedEdge:
-		state.Edges.TOP, state.Edges.BOTTOM:
-			return int(floor(local.x / cell_size))
-		state.Edges.LEFT, state.Edges.RIGHT:
-			return int(floor(local.z / cell_size))
+	var x = int(floor(local.x / cellSize))
+	var y = int(floor(local.z / cellSize))
+
+	if x < 0 || x >= Board.dimension || y < 0 || y >= Board.dimension:
+		return Vector2(-1, -1)
+
+	var cell = Vector2(x, y)
+		
+	if valid(cell):
+		return cell
+	else:
+		return Vector2(-1, -1)
 	
-	return -1
+func valid(pos: Vector2) -> bool:
+	if corners.has(pos):
+		return false
 	
-func getLaneStart() -> Vector2:
-	match state.selectedEdge:
-		state.Edges.TOP:
-			return Vector2(state.selectedLane, 0)
-		state.Edges.BOTTOM:
-			return Vector2(state.selectedLane, Board.dimension - 1)
-		state.Edges.LEFT:
-			return Vector2(0, state.selectedLane)
-		state.Edges.RIGHT:
-			return Vector2(Board.dimension - 1, state.selectedLane)
-	return Vector2.ZERO
+	return (
+		pos.x == 0
+		|| pos.x == Board.dimension - 1
+		|| pos.y == 0
+		|| pos.y == Board.dimension - 1
+	)
+	
+func updateLaneStart(pos : Vector2) -> void:
+	if pos.y == 0 && pos.x > 0:
+		state.selectedEdge = state.Edges.TOP
+		
+	elif pos.y == Board.dimension - 1 && pos.x > 0:
+		state.selectedEdge = state.Edges.BOTTOM
+
+	elif pos.y > 0 && pos.x == 0:
+		state.selectedEdge = state.Edges.LEFT
+		
+	elif pos.y > 0 && pos.x  == Board.dimension - 1:
+		state.selectedEdge = state.Edges.RIGHT
+		
+	state.updatePushDirection()
+	state.laneStart = pos
+	state.laneSelected = true
+	selectedNewLane.emit()

@@ -9,7 +9,6 @@ var diceId := 0
 signal determinedDie()
 
 func determineDie() -> void:
-	print("Setting up new Die")
 	var dice = diceScene.instantiate()
 	dice.init(diceId)
 	diceId += 1

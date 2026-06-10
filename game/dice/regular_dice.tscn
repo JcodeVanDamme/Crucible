@@ -50,19 +50,12 @@ code = "shader_type spatial;
 uniform vec4 cube_color : source_color;
 uniform vec4 lane_color : source_color;
 
-uniform float lane_strength = 0.4;
-
-uniform bool active = false;
 uniform bool in_lane;
 
 void fragment() {
 	vec4 color = cube_color;
 	if (in_lane) {
-		color.rgb = mix(
-		color.rgb,
-		lane_color.rgb,
-		lane_color.a * lane_strength
-		);
+		color = lane_color
 	}
 	ALBEDO = color.rgb;
 }
@@ -71,11 +64,6 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4u2ki"]
 render_priority = 0
 shader = SubResource("Shader_fooq8")
-shader_parameter/cube_color = Color(0, 0, 0, 1)
-shader_parameter/lane_color = Color(0, 0, 0, 1)
-shader_parameter/lane_strength = 0.15
-shader_parameter/active = false
-shader_parameter/in_lane = false
 
 [node name="RegularDice" type="Node3D"]
 script = ExtResource("2_sntjh")

@@ -7,16 +7,19 @@ signal globals_changed
 	set(value):
 		dimension = value
 		updateGlobals()
+		globals_changed.emit()
 		
 @export var spacing := 1.2:
 	set(value):
 		spacing = value
 		updateGlobals()
+		globals_changed.emit()
 		
 @export var cubeSize := 1.0:
 	set(value):
 		cubeSize = value
 		updateGlobals()
+		globals_changed.emit()
 		
 @export var cubeColor := Color.ORANGE:
 	set(value):

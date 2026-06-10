@@ -14,8 +14,8 @@ func buildTiles() -> void:
 	for child in get_children():
 		remove_child(child)
 	
-	for x in range(-1, Board.dimension + 1, 1):
-		for y in range(-1, Board.dimension + 1, 1):
+	for x in range(Board.dimension):
+		for y in range(Board.dimension):
 			
 			tiles.set(Vector2(x,y), spawnTile(x, y))
 			
@@ -26,30 +26,25 @@ func spawnTile(x : int, y : int) -> Node3D:
 		
 		var mesh := tile.get_child(0) as MeshInstance3D
 		var mat := StandardMaterial3D.new()
+		
 		if onEdge(Vector2(x, y)):
 			mat.albedo_color = Colors.tileEdgeColor
 		else:
 			mat.albedo_color = Colors.tileMainColor
 		mesh.material_override = mat
-
-		var step = Board.cubeSize + Board.spacing
-		var center_index = (Board.dimension - 1) * 0.5
-		var xPos = (x - center_index) * step
-		var zPos = (y - center_index) * step
 		
-		tile.position = Vector3(
-			xPos,
-			-((Board.cubeSize * 0.5) + Board.spacing),
-			zPos
-		)
+		tile.position = Board.toLocalPos(
+			Vector2(x, y),
+			-((Board.cubeSize * 0.5) + Board.spacing)
+			)
 		return tile
 		
 func onEdge(pos : Vector2) -> bool:
 	return (
-		pos.x == -1 or
-		pos.x == Board.dimension or
-		pos.y == -1 or
-		pos.y == Board.dimension
+		pos.x == 0 ||
+		pos.x == Board.dimension - 1 ||
+		pos.y == 0 ||
+		pos.y == Board.dimension - 1
 	)
 		
 func highlightLane() -> void:
@@ -82,7 +77,7 @@ func clearLaneHighlight() -> void:
 	
 func getLaneTiles():
 	var tilesInLane = []
-	var coord = state.laneStart - state.pushDirection
+	var coord = state.laneStart
 	
 	while checkBounds(coord):
 		tilesInLane.append(coord)
@@ -91,12 +86,12 @@ func getLaneTiles():
 	return tilesInLane
 	
 func checkBounds(pos : Vector2) -> bool:
-	if pos.x < -1:
+	if pos.x < 0:
 		return false
-	if pos.x > Board.dimension:
+	if pos.x > Board.dimension - 1:
 		return false
-	if pos.y < -1:
+	if pos.y < 0:
 		return false
-	if pos.y > Board.dimension:
+	if pos.y > Board.dimension - 1:
 		return false
 	return true

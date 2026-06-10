@@ -6,11 +6,14 @@ func _ready() -> void:
 		$BoardRoot.globals_changed.connect(
 			func():
 			$BoardRoot/Board.buildBoard()
-			$BoardRoot/Visuals.init()
+			$BoardRoot/Visuals/Tiles.buildTiles()
 			)
 		$BoardRoot/Board.state = $BoardRoot/State
 		$BoardRoot/Board.buildBoard()
-		$BoardRoot/Visuals.init()
+		$BoardRoot/Visuals/Tiles.buildTiles()
 	
-	#$CanvasLayer/UI.edge = $BoardRoot/Board.updateEdge(true)
 	Board.camera = $BoardRoot/CameraController/Camera3D
+	
+func _process(delta: float) -> void:
+	if !Engine.is_editor_hint():
+		$CanvasLayer/UI.edge = $BoardRoot/State.edgeName()

@@ -52,7 +52,6 @@ func initTurn() -> void:
 	selectionMade = false
 	state.currentDice = null
 	state.laneSelected = false
-	state.selectedLane = -1
 	tileRenderer.clearLaneHighlight()
 	diceSupplier.determineDie()
 	
@@ -63,10 +62,11 @@ func updateTurn() -> void:
 	
 func checkInput():
 	if Input.is_action_just_pressed("confirm"):
-		if !selectionMade:
+		if !selectionMade && state.laneSelected:
 			selectionMade = true
-		else:
+		elif selectionMade && state.laneSelected:
 			board.activateCube()
+			
 	elif Input.is_action_just_pressed("abort") && selectionMade:
 		selectionMade = false
 		

@@ -18,28 +18,22 @@ func buildBoard():
 	state.positionalMatrix = layout
 	
 func activateCube():
-	if state.selectedLane == -1:
-		print("Cant Push when not in Lane")
-		return
-		
 	""" First Dice in Lane """
-	if state.positionalMatrix.get(state.laneStart) == null:
-		state.positionalMatrix.set(state.laneStart, state.currentDice.id)
-		state.dices.get(state.currentDice.id).pos = state.laneStart
+	if state.positionalMatrix.get(state.dicePos) == null:
+		state.positionalMatrix.set(state.dicePos, state.currentDice.id)
+		state.dices.get(state.currentDice.id).pos = state.dicePos
 		cubeMoved.emit(state.currentDice.id)
-		print("First Dice placed. Finished.")
 		finished.emit()
 		
 	else:
 		""" Dice present in Lane """
 		var chain = getDiceChain()
 		pushDice(chain)
-		print("Continous Dice placed. Finished.")
 		finished.emit()
 		
 func getDiceChain() -> Array:
 	var chain = []
-	var coord = state.laneStart
+	var coord = state.dicePos
 	
 	while checkBounds(coord):
 		var id = state.positionalMatrix.get(coord)
@@ -69,8 +63,8 @@ func pushDice(chain : Array) -> void:
 			continue
 			
 	""" Append new Dice at the Front """
-	state.positionalMatrix.set(state.laneStart, state.currentDice.id)
-	state.dices.get(state.currentDice.id).pos = state.laneStart
+	state.positionalMatrix.set(state.dicePos, state.currentDice.id)
+	state.dices.get(state.currentDice.id).pos = state.dicePos
 	cubeMoved.emit(state.currentDice.id)
 	
 func moveDice(from : Vector2, to : Vector2) -> void:
@@ -85,16 +79,15 @@ func moveDice(from : Vector2, to : Vector2) -> void:
 		
 func deleteCube(at : Vector2) -> void:
 	var id = state.positionalMatrix.get(at)
-	state.dices.erase(id)
 	cubeLeftBoard.emit(id)
 		
 func checkBounds(pos) -> bool:
-	if pos.x < 0:
+	if pos.x < 1:
 		return false
-	if pos.x >= Board.dimension:
+	if pos.x > Board.dimension - 2:
 		return false
-	if pos.y < 0:
+	if pos.y < 1:
 		return false
-	if pos.y >= Board.dimension:
+	if pos.y > Board.dimension - 2:
 		return false
 	return true

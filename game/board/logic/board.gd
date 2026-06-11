@@ -23,8 +23,6 @@ var width : float:
 	get:
 		return dimension * (cubeSize + spacing)
 
-var camera : Camera3D
-
 func toLocalPos(matrixPos : Vector2, yOffset : float) -> Vector3:
 	var step = cubeSize + spacing
 	var offset = (dimension - 1) * step * 0.5

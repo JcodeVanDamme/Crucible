@@ -1,6 +1,5 @@
-[gd_scene load_steps=13 format=3 uid="uid://do8nw6wm14m1f"]
+[gd_scene load_steps=12 format=3 uid="uid://do8nw6wm14m1f"]
 
-[ext_resource type="Script" uid="uid://dmvncmrah1skb" path="res://game/main.gd" id="1_8gaax"]
 [ext_resource type="Script" uid="uid://2hgc6wq0156k" path="res://game/board/logic/board_logic.gd" id="2_2fjjk"]
 [ext_resource type="Script" uid="uid://cp6dpd28ofsq6" path="res://game/board/board_root.gd" id="3_5un7r"]
 [ext_resource type="PackedScene" uid="uid://cwt2bxtuhioe7" path="res://game/ui/ui.tscn" id="3_emt18"]
@@ -14,7 +13,6 @@
 [ext_resource type="Script" uid="uid://bie0tdnb1foe3" path="res://game/board_handler.gd" id="13_li27q"]
 
 [node name="Main" type="Node3D"]
-script = ExtResource("1_8gaax")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

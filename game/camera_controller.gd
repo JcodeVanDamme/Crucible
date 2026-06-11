@@ -6,6 +6,7 @@ const HEIGHT := 13.0
 
 var board := preload("res://game/board.tres")
 
+var camera : Camera3D
 var radius := 20.0
 var moving := false
 
@@ -20,10 +21,11 @@ var currentAnchor := 0
 var moveTween = Tween.new()
 
 func _ready() -> void:
-	$Camera3D.global_position = getAnchorPos()
+	camera = get_viewport().get_camera_3d()
+	camera.global_position = getAnchorPos()
 	
 func _process(_delta: float) -> void:
-	board.camera.look_at(Vector3.ZERO, Vector3.UP)
+	camera.look_at(Vector3.ZERO, Vector3.UP)
 
 func updateAnchor(step: int) -> void:
 	if moving:
@@ -41,7 +43,7 @@ func updateAnchor(step: int) -> void:
 	moveTween.set_ease(Tween.EASE_IN_OUT)
 	
 	moveTween.tween_property(
-		board.camera,
+		camera,
 		"global_position",
 		getAnchorPos(),
 		0.6

@@ -2,9 +2,7 @@
 extends Node3D
 class_name BoardDices
 
-var cubeScene = preload("res://game/dice/regular_dice.tscn")
-
-var state : BoardState
+var state = preload("res://game/board_state.tres")
 
 func init() -> void:
 	for child in get_children(): 

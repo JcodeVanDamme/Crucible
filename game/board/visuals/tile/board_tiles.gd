@@ -3,8 +3,8 @@ extends Node3D
 class_name BoardTiles
 
 var tileScene = preload("res://game/board/visuals/tile/Tile.tscn")
-
-var state : BoardState
+var state = preload("res://game/board_state.tres")
+var board = preload("res://game/board.tres")
 
 var tiles := {}
 var highlightedTiles
@@ -14,15 +14,15 @@ func buildTiles() -> void:
 	for child in get_children():
 		remove_child(child)
 	
-	for x in range(Board.dimension):
-		for y in range(Board.dimension):
+	for x in range(board.dimension):
+		for y in range(board.dimension):
 			
 			tiles.set(Vector2(x,y), spawnTile(x, y))
 			
 func spawnTile(x : int, y : int) -> Node3D:
 		var tile = tileScene.instantiate()
 		add_child(tile)
-		tile.setSize(Board.cubeSize)
+		tile.setSize(board.cubeSize)
 		
 		var mesh := tile.get_child(0) as MeshInstance3D
 		var mat := StandardMaterial3D.new()
@@ -33,18 +33,18 @@ func spawnTile(x : int, y : int) -> Node3D:
 			mat.albedo_color = Colors.tileMainColor
 		mesh.material_override = mat
 		
-		tile.position = Board.toLocalPos(
+		tile.position = board.toLocalPos(
 			Vector2(x, y),
-			-((Board.cubeSize * 0.5) + Board.spacing)
+			-((board.cubeSize * 0.5) + board.spacing)
 			)
 		return tile
 		
 func onEdge(pos : Vector2) -> bool:
 	return (
 		pos.x == 0 ||
-		pos.x == Board.dimension - 1 ||
+		pos.x == board.dimension - 1 ||
 		pos.y == 0 ||
-		pos.y == Board.dimension - 1
+		pos.y == board.dimension - 1
 	)
 		
 func highlightLane() -> void:
@@ -88,10 +88,10 @@ func getLaneTiles():
 func checkBounds(pos : Vector2) -> bool:
 	if pos.x < 0:
 		return false
-	if pos.x > Board.dimension - 1:
+	if pos.x > board.dimension - 1:
 		return false
 	if pos.y < 0:
 		return false
-	if pos.y > Board.dimension - 1:
+	if pos.y > board.dimension - 1:
 		return false
 	return true

@@ -1,5 +1,4 @@
-@tool
-extends Node
+extends Resource
 class_name BoardState
 
 var positionalMatrix : Dictionary

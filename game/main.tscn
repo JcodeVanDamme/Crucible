@@ -1,10 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://do8nw6wm14m1f"]
+[gd_scene load_steps=13 format=3 uid="uid://do8nw6wm14m1f"]
 
 [ext_resource type="Script" uid="uid://dmvncmrah1skb" path="res://game/main.gd" id="1_8gaax"]
 [ext_resource type="Script" uid="uid://2hgc6wq0156k" path="res://game/board/logic/board_logic.gd" id="2_2fjjk"]
 [ext_resource type="Script" uid="uid://cp6dpd28ofsq6" path="res://game/board/board_root.gd" id="3_5un7r"]
 [ext_resource type="PackedScene" uid="uid://cwt2bxtuhioe7" path="res://game/ui/ui.tscn" id="3_emt18"]
-[ext_resource type="Script" uid="uid://drbdcbo86015c" path="res://game/board_state.gd" id="5_ioaqv"]
 [ext_resource type="Script" uid="uid://cmqqgfjooodwm" path="res://game/board/logic/dice_supplier.gd" id="6_dp3pf"]
 [ext_resource type="Script" uid="uid://oq1ik3meixhh" path="res://game/board/visuals/cube/board_dices.gd" id="6_xkbyp"]
 [ext_resource type="Script" uid="uid://dop6sbn517uwl" path="res://game/board/visuals/tile/board_tiles.gd" id="7_wjctj"]
@@ -32,13 +31,9 @@ tileMainColor = Color(0.31764707, 0.2784314, 0.32941177, 1)
 tileEdgeColor = Color(0.22905716, 0.18199837, 0.2447364, 1)
 selectionColor = Color(1, 0.13999999, 0.35500002, 1)
 
-[node name="State" type="Node" parent="BoardRoot"]
-script = ExtResource("5_ioaqv")
-
-[node name="TurnManager" type="Node" parent="BoardRoot" node_paths=PackedStringArray("board", "state", "mouseController", "selectionHandler", "boardHandler", "diceSupplier", "cameraController", "boardTiles", "boardDices")]
+[node name="TurnManager" type="Node" parent="BoardRoot" node_paths=PackedStringArray("board", "mouseController", "selectionHandler", "boardHandler", "diceSupplier", "cameraController", "boardTiles", "boardDices")]
 script = ExtResource("12_li27q")
 board = NodePath("../Board")
-state = NodePath("../State")
 mouseController = NodePath("../MouseController")
 selectionHandler = NodePath("../SelectionHandler")
 boardHandler = NodePath("../BoardHandler")

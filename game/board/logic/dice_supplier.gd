@@ -3,7 +3,7 @@ class_name DiceSupplier
 
 var diceScene = preload("res://game/dice/regular_dice.tscn")
 
-var state : BoardState
+var state = preload("res://game/board_state.tres")
 
 var diceId := 1
 

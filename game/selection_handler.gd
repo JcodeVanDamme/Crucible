@@ -1,7 +1,8 @@
 extends Node
 class_name SelectionHandler
 
-var state : BoardState
+var state = preload("res://game/board_state.tres")
+var board = preload("res://game/board.tres")
 
 var boardTiles : BoardTiles
 
@@ -14,20 +15,20 @@ func handleEdgeSelection(pos : Vector2) -> void:
 	if pos.y == 0 && pos.x > 0:
 		state.currentEdge = state.Edges.TOP
 		
-	elif pos.y == Board.dimension - 1 && pos.x > 0:
+	elif pos.y == board.dimension - 1 && pos.x > 0:
 		state.currentEdge = state.Edges.BOTTOM
 
 	elif pos.y > 0 && pos.x == 0:
 		state.currentEdge = state.Edges.LEFT
 		
-	elif pos.y > 0 && pos.x  == Board.dimension - 1:
+	elif pos.y > 0 && pos.x  == board.dimension - 1:
 		state.currentEdge = state.Edges.RIGHT
 		
 	state.updatePushDirection()
 	state.selectedLaneStartPos = pos
 		
 	state.selectedDie = state.spawnedDie
-	state.spawnedDie.position = Board.toLocalPos(state.selectedLaneStartPos, 0)
+	state.spawnedDie.position = board.toLocalPos(state.selectedLaneStartPos, 0)
 	state.spawnedDie.visible = true
 	state.spawnedDie.mesh.enableOutline()
 	state.isLaneSelected = true

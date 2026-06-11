@@ -1,6 +1,8 @@
 @tool
 extends Node3D
 
+var board := preload("res://game/board.tres")
+
 signal globals_changed
 
 @export var dimension := 8:
@@ -13,13 +15,11 @@ signal globals_changed
 	set(value):
 		spacing = value
 		updateGlobals()
-		globals_changed.emit()
 		
 @export var cubeSize := 1.0:
 	set(value):
 		cubeSize = value
 		updateGlobals()
-		globals_changed.emit()
 		
 @export var cubeColor := Color.ORANGE:
 	set(value):
@@ -44,8 +44,8 @@ signal globals_changed
 var width : float
 		
 func updateGlobals() -> void:
-	Board.dimension = dimension
-	Board.spacing = spacing
-	Board.cubeSize = cubeSize
-	Board.width = (dimension) * (cubeSize + spacing)
-	globals_changed.emit()
+	board.dimension = dimension
+	board.spacing = spacing
+	board.cubeSize = cubeSize
+	board.width = (dimension) * (cubeSize + spacing)
+	board.board_changed.emit()

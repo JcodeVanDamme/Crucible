@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="Board" load_steps=2 format=3 uid="uid://bpmt5ok6fthdg"]
+
+[ext_resource type="Script" uid="uid://cpe414aadmb7a" path="res://game/board/logic/board.gd" id="1_1pd56"]
+
+[resource]
+script = ExtResource("1_1pd56")
+metadata/_custom_type_script = "uid://cpe414aadmb7a"

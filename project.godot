@@ -17,10 +17,7 @@ config/icon="res://game/icon.svg"
 
 [autoload]
 
-Board="*res://game/board/logic/board_globals.gd"
-Edges="*res://game/board/logic/edges.gd"
 Colors="*res://game/board/visuals/board_colors.gd"
-Camera="*res://game/camera_global.gd"
 
 [display]
 

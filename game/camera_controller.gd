@@ -6,11 +6,12 @@ class_name CameraController
 @onready var anchorC = $AnchorC as Node3D
 @onready var anchorD = $AnchorD as Node3D
 
-var radius := 20.0
-
 const ORBIT_RADIUS := 30.0
 const HEIGHT := 13.0
 
+var board := preload("res://game/board.tres")
+
+var radius := 20.0
 var moving := false
 
 var directions = [
@@ -27,7 +28,7 @@ func _ready() -> void:
 	$Camera3D.global_position = getAnchorPos()
 	
 func _process(_delta: float) -> void:
-	Board.camera.look_at(Vector3.ZERO, Vector3.UP)
+	board.camera.look_at(Vector3.ZERO, Vector3.UP)
 
 func updateAnchor(step: int) -> void:
 	if moving:
@@ -45,7 +46,7 @@ func updateAnchor(step: int) -> void:
 	moveTween.set_ease(Tween.EASE_IN_OUT)
 	
 	moveTween.tween_property(
-		Board.camera,
+		board.camera,
 		"global_position",
 		getAnchorPos(),
 		0.6

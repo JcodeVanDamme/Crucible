@@ -2,7 +2,8 @@
 extends Node
 class_name BoardLogic
 
-var state : BoardState
+var board = preload("res://game/board.tres")
+var state = preload("res://game/board_state.tres")
 
 signal cubeMoved(id : int)
 signal cubeLeftBoard(id : int)
@@ -10,8 +11,8 @@ signal finished()
 
 func buildBoard():
 	var layout = {}
-	for x in range(Board.dimension):
-		for y in range(Board.dimension):
+	for x in range(board.dimension):
+		for y in range(board.dimension):
 			
 			layout.set(Vector2(x, y), null)
 			
@@ -84,10 +85,10 @@ func deleteCube(at : Vector2) -> void:
 func checkBounds(pos) -> bool:
 	if pos.x < 1:
 		return false
-	if pos.x > Board.dimension - 2:
+	if pos.x > board.dimension - 2:
 		return false
 	if pos.y < 1:
 		return false
-	if pos.y > Board.dimension - 2:
+	if pos.y > board.dimension - 2:
 		return false
 	return true

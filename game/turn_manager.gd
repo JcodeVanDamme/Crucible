@@ -1,8 +1,9 @@
 extends Node
 class_name TurnManager
 
+var state = preload("res://game/board_state.tres") 
+
 @export var board : BoardLogic
-@export var state : BoardState
 @export var mouseController : MouseController
 @export var selectionHandler : SelectionHandler
 @export var boardHandler : BoardHandler
@@ -14,14 +15,6 @@ class_name TurnManager
 var selectionMade : bool
 
 func _ready() -> void:
-	board.state = state
-	diceSupplier.state = state
-	mouseController.state = state
-	boardTiles.state = state
-	boardDices.state = state
-	boardHandler.state = state
-	
-	selectionHandler.state = state
 	selectionHandler.boardTiles = boardTiles
 	
 	board.buildBoard()

@@ -4,4 +4,7 @@
 
 [resource]
 script = ExtResource("1_1pd56")
+dimension = 9
+spacing = 0.1
+cubeSize = 2.0
 metadata/_custom_type_script = "uid://cpe414aadmb7a"

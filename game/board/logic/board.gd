@@ -4,13 +4,24 @@ class_name Board
 
 signal board_changed
 
-var dimension : int
+@export var dimension : int:
+	set(value):
+		dimension = value
+		board_changed.emit()
 		
-var spacing : float
+@export var spacing : float:
+	set(value):
+		spacing = value
+		board_changed.emit()
 		
-var cubeSize : float
+@export var cubeSize : float:
+	set(value):
+		cubeSize = value
+		board_changed.emit()
 
-var width : float
+var width : float:
+	get:
+		return dimension * (cubeSize + spacing)
 
 var camera : Camera3D
 

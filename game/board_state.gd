@@ -4,6 +4,9 @@ class_name BoardState
 var positionalMatrix : Dictionary
 var dices : Dictionary
 
+var spawnedDie : Dice
+var selectedDie : Dice
+
 enum Edges {
 	TOP,
 	RIGHT,
@@ -11,43 +14,38 @@ enum Edges {
 	LEFT
 }
 
-var spawnedDie : Dice
-var selectedDie : Dice
-
 var currentEdge := Edges.TOP
-var pushDirection : Vector2
+
+var edgeName : String:
+	get:
+		match currentEdge:
+			Edges.TOP:
+				return "TOP"
+			Edges.BOTTOM:
+				return "BOTTOM"
+			Edges.LEFT:
+				return "LEFT"
+			Edges.RIGHT:
+				return "RIGHT"
+		return "INVALID"
+
+var pushDirection : Vector2:
+	get:
+		match currentEdge:
+			Edges.TOP:
+				return Vector2(0, 1)
+			Edges.BOTTOM:
+				return Vector2(0, -1)
+			Edges.LEFT:
+				return Vector2(1, 0)
+			Edges.RIGHT:
+				return Vector2(-1, 0)
+		return Vector2.ZERO
 
 var isLaneSelected : bool
 
-var selectedLaneStartPos : Vector2:
-	set(value):
-		selectedLaneStartPos = value
-		spawnPos = selectedLaneStartPos + pushDirection
-		 
-var spawnPos : Vector2
-
-func _ready() -> void:
-	updatePushDirection()
+var selectedLaneStartPos : Vector2
 	
-func updatePushDirection() -> void:
-	match currentEdge:
-		Edges.TOP:
-			pushDirection =  Vector2(0, 1)
-		Edges.BOTTOM:
-			pushDirection = Vector2(0, -1)
-		Edges.LEFT:
-			pushDirection = Vector2(1, 0)
-		Edges.RIGHT:
-			pushDirection = Vector2(-1, 0)
-			
-func edgeName() -> String:
-	match currentEdge:
-		Edges.TOP:
-			return "TOP"
-		Edges.BOTTOM:
-			return "BOTTOM"
-		Edges.LEFT:
-			return "LEFT"
-		Edges.RIGHT:
-			return "RIGHT"
-	return "NO VALID EDGE"
+var spawnPos : Vector2:
+	get:
+		return selectedLaneStartPos + pushDirection

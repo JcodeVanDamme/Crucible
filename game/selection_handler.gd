@@ -24,7 +24,6 @@ func handleEdgeSelection(pos : Vector2) -> void:
 	elif pos.y > 0 && pos.x  == board.dimension - 1:
 		state.currentEdge = state.Edges.RIGHT
 		
-	state.updatePushDirection()
 	state.selectedLaneStartPos = pos
 		
 	state.selectedDie = state.spawnedDie

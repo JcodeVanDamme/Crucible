@@ -1,10 +1,11 @@
 @tool
-extends Node
+extends Resource
+class_name BoardColors
 
-var cubeColor : Color
+@export var cubeColor : Color
 
-var tileMainColor : Color
+@export var tileMainColor : Color
 		
-var tileEdgeColor : Color
+@export var tileEdgeColor : Color
 		
-var selectionColor : Color
+@export var selectionColor : Color

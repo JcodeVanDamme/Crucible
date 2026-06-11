@@ -1,11 +1,6 @@
 extends Node3D
 class_name CameraController
 
-@onready var anchorA = $AnchorA as Node3D
-@onready var anchorB = $AnchorB as Node3D
-@onready var anchorC = $AnchorC as Node3D
-@onready var anchorD = $AnchorD as Node3D
-
 const ORBIT_RADIUS := 30.0
 const HEIGHT := 13.0
 

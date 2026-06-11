@@ -3,8 +3,10 @@ extends Node3D
 class_name BoardTiles
 
 var tileScene = preload("res://game/board/visuals/tile/Tile.tscn")
+
 var state = preload("res://game/board_state.tres")
 var board = preload("res://game/board.tres")
+var colors := preload("res://game/board_colors.tres")
 
 var tiles := {}
 var highlightedTiles
@@ -28,9 +30,9 @@ func spawnTile(x : int, y : int) -> Node3D:
 		var mat := StandardMaterial3D.new()
 		
 		if onEdge(Vector2(x, y)):
-			mat.albedo_color = Colors.tileEdgeColor
+			mat.albedo_color = colors.tileEdgeColor
 		else:
-			mat.albedo_color = Colors.tileMainColor
+			mat.albedo_color = colors.tileMainColor
 		mesh.material_override = mat
 		
 		tile.position = board.toLocalPos(
@@ -56,7 +58,7 @@ func highlightLane() -> void:
 		var tile = tiles.get(coord)
 		var mesh := tile.get_child(0) as MeshInstance3D
 		var mat := mesh.material_override as StandardMaterial3D
-		mat.albedo_color = Colors.selectionColor
+		mat.albedo_color = colors.selectionColor
 		
 	highlightedTiles = laneTiles
 	
@@ -69,9 +71,9 @@ func clearLaneHighlight() -> void:
 		var mesh := tile.get_child(0) as MeshInstance3D
 		var mat := mesh.material_override as StandardMaterial3D
 		if onEdge(coord):
-			mat.albedo_color = Colors.tileEdgeColor
+			mat.albedo_color = colors.tileEdgeColor
 		else:
-			mat.albedo_color = Colors.tileMainColor
+			mat.albedo_color = colors.tileMainColor
 		
 	highlightedTiles = null
 	

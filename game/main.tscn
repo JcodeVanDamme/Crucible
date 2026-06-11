@@ -24,12 +24,6 @@ script = ExtResource("1_8gaax")
 
 [node name="BoardRoot" type="Node3D" parent="."]
 script = ExtResource("3_5un7r")
-spacing = 0.1
-cubeSize = 2.0
-cubeColor = Color(0.9748911, 0.8214165, 0.72708297, 1)
-tileMainColor = Color(0.31764707, 0.2784314, 0.32941177, 1)
-tileEdgeColor = Color(0.22905716, 0.18199837, 0.2447364, 1)
-selectionColor = Color(1, 0.13999999, 0.35500002, 1)
 
 [node name="TurnManager" type="Node" parent="BoardRoot" node_paths=PackedStringArray("board", "mouseController", "selectionHandler", "boardHandler", "diceSupplier", "cameraController", "boardTiles", "boardDices")]
 script = ExtResource("12_li27q")

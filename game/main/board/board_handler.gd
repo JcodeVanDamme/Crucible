@@ -7,7 +7,7 @@ var state = preload("res://game/resources/global/state/board_state.tres")
 var events = preload("res://game/resources/global/event/events.tres")
 
 func _ready() -> void:
-	events.selection_executed.connect(activateCube)
+	events.selection_locked.connect(assembleActionQueue)
 	buildBoard()
 
 func buildBoard():
@@ -19,7 +19,7 @@ func buildBoard():
 			
 	state.positionalMatrix = layout
 	
-func activateCube():
+func assembleActionQueue():
 	pushDice(getDiceChain())
 	events.turn_ended.emit()
 		

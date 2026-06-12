@@ -7,6 +7,8 @@ var dices : Dictionary
 var spawnedDie : Dice
 var selectedDie : Dice
 
+var actionQueue : Array[Action]
+
 enum Edges {
 	TOP,
 	RIGHT,

@@ -8,10 +8,6 @@ var events = preload("res://game/events.tres")
 var corners : Array
 var lastSelectedCell = Vector2(-1, -1)
 
-signal selectedEdge(pos : Vector2)
-signal selectedInner(pos : Vector2)
-signal selectedNone()
-
 func _ready() -> void:
 	corners = [
 		Vector2(0, 0),
@@ -31,14 +27,14 @@ func updateMouseSelection() -> void:
 		lastSelectedCell = cell
 		
 		if onEdge(cell):
-			selectedEdge.emit(cell)
+			events.selection_changed_edge.emit(cell)
 		else:
-			selectedInner.emit(cell)
+			events.selection_changed_inner.emit(cell)
 					
 	elif cell == Vector2(-1, -1):
 		
 		lastSelectedCell = null
-		selectedNone.emit()
+		events.selection_changed_none.emit(cell)
 		
 func getHoveredCell() -> Vector2:
 	var hit = getMouseHit()

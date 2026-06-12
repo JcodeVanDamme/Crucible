@@ -7,6 +7,11 @@ var events = preload("res://game/events.tres")
 
 var boardTiles : BoardTiles
 
+func _ready() -> void:
+	events.selection_changed_edge.connect(handleEdgeSelection)
+	events.selection_changed_inner.connect(handleInnerSelection)
+	events.selection_changed_none.connect(handleNoSelection)
+
 func handleNoSelection() -> void:
 	resetSelection()
 

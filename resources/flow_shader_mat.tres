@@ -1,0 +1,22 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://b77vm4t5bi6nw"]
+
+[ext_resource type="Shader" uid="uid://xf5krd2pvvkf" path="res://resources/flow_shader.gdshader" id="1_o878v"]
+
+[sub_resource type="Gradient" id="Gradient_o878v"]
+colors = PackedColorArray(0.31061712, 0.31061712, 0.3106171, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4nquk"]
+gradient = SubResource("Gradient_o878v")
+fill_to = Vector2(1, 1)
+
+[resource]
+render_priority = 2
+shader = ExtResource("1_o878v")
+shader_parameter/albedo_texture = SubResource("GradientTexture2D_4nquk")
+shader_parameter/albedo_color = Color(1, 0, 0, 1)
+shader_parameter/warp_speed = 0.7150000339625
+shader_parameter/warp_intensity = 0.7200000342
+shader_parameter/warp_closeness = 1.09300005121898
+shader_parameter/flow_dir = Vector2(1, -1)
+shader_parameter/flow_speed = 0.0
+shader_parameter/uv_scale = 6.10400028668012

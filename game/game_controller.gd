@@ -5,7 +5,6 @@ var state = preload("res://game/board_state.tres")
 var events = preload("res://game/events.tres") 
 
 @export var dices : BoardDices
-@export var mouseController : MouseController
 @export var selectionHandler : SelectionHandler
 @export var diceSupplier : DiceSupplier
 @export var boardTiles : BoardTiles
@@ -18,16 +17,6 @@ func _ready() -> void:
 		)
 	events.turn_started.connect(func():
 		handleTurnStart()
-		)
-		
-	mouseController.selectedEdge.connect(func(pos : Vector2):
-		selectionHandler.handleEdgeSelection(pos)
-		)
-	mouseController.selectedInner.connect(func(pos : Vector2):
-		selectionHandler.handleInnerSelection(pos)
-		)
-	mouseController.selectedNone.connect(func():
-		selectionHandler.handleNoSelection()
 		)
 	
 	await get_tree().process_frame

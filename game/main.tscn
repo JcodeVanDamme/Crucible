@@ -23,48 +23,47 @@
 [node name="BoardRoot" type="Node3D" parent="."]
 script = ExtResource("3_5un7r")
 
-[node name="GameController" type="Node" parent="BoardRoot" node_paths=PackedStringArray("dices", "mouseController", "selectionHandler", "diceSupplier", "boardTiles")]
+[node name="GameController" type="Node" parent="BoardRoot" node_paths=PackedStringArray("dices", "selectionHandler", "diceSupplier", "boardTiles")]
 script = ExtResource("12_li27q")
-dices = NodePath("../Visuals/Cubes")
-mouseController = NodePath("../MouseController")
-selectionHandler = NodePath("../SelectionHandler")
-diceSupplier = NodePath("../DiceSupplier")
-boardTiles = NodePath("../Visuals/Tiles")
+dices = NodePath("Visuals/Cubes")
+selectionHandler = NodePath("SelectionHandler")
+diceSupplier = NodePath("DiceSupplier")
+boardTiles = NodePath("Visuals/Tiles")
 
-[node name="Visuals" type="Node3D" parent="BoardRoot"]
+[node name="InputHandler" type="Node" parent="BoardRoot/GameController"]
+script = ExtResource("5_dp3pf")
 
-[node name="Cubes" type="Node3D" parent="BoardRoot/Visuals"]
-script = ExtResource("6_xkbyp")
-
-[node name="Tiles" type="Node3D" parent="BoardRoot/Visuals"]
-script = ExtResource("7_wjctj")
-
-[node name="Board" type="Node" parent="BoardRoot"]
-script = ExtResource("2_2fjjk")
-
-[node name="MouseController" type="Node" parent="BoardRoot"]
+[node name="MouseController" type="Node" parent="BoardRoot/GameController/InputHandler"]
 script = ExtResource("9_lx3aj")
 
-[node name="SelectionHandler" type="Node" parent="BoardRoot"]
-script = ExtResource("10_ioaqv")
-
-[node name="DiceSupplier" type="Node" parent="BoardRoot"]
-script = ExtResource("6_dp3pf")
-
-[node name="CameraController" type="Node3D" parent="BoardRoot"]
+[node name="CameraHandler" type="Node3D" parent="BoardRoot/GameController"]
 script = ExtResource("10_itumj")
 
-[node name="Camera3D" type="Camera3D" parent="BoardRoot/CameraController"]
+[node name="Camera3D" type="Camera3D" parent="BoardRoot/GameController/CameraHandler"]
 transform = Transform3D(0.7071068, 0.2534044, -0.660141, 2.7822852e-08, 0.9335804, 0.35836798, 0.7071068, -0.25340447, 0.660141, -22.5, 13.000001, 22.5)
 projection = 1
 size = 18.0
 near = 0.001
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="BoardRoot/CameraController/Camera3D"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="BoardRoot/GameController/CameraHandler/Camera3D"]
 transform = Transform3D(-0.9017074, 0.42260912, -0.091242015, -0.33728537, -0.5555728, 0.7599852, 0.27048504, 0.71605897, 0.643504, 0, 0, 0)
 light_energy = 2.0
 shadow_enabled = true
 directional_shadow_mode = 0
 
-[node name="InputHandler" type="Node" parent="BoardRoot"]
-script = ExtResource("5_dp3pf")
+[node name="BoardHandler" type="Node" parent="BoardRoot/GameController"]
+script = ExtResource("2_2fjjk")
+
+[node name="Visuals" type="Node3D" parent="BoardRoot/GameController"]
+
+[node name="Cubes" type="Node3D" parent="BoardRoot/GameController/Visuals"]
+script = ExtResource("6_xkbyp")
+
+[node name="Tiles" type="Node3D" parent="BoardRoot/GameController/Visuals"]
+script = ExtResource("7_wjctj")
+
+[node name="SelectionHandler" type="Node" parent="BoardRoot/GameController"]
+script = ExtResource("10_ioaqv")
+
+[node name="DiceSupplier" type="Node" parent="BoardRoot/GameController"]
+script = ExtResource("6_dp3pf")

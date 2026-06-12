@@ -12,6 +12,6 @@ signal selection_changed_edge(pos : Vector2)
 signal selection_changed_inner(pos : Vector2)
 signal selection_changed_none
 
-signal camera_update_queried(left : bool)
-
 signal turn_ended
+
+signal action_queue_ready

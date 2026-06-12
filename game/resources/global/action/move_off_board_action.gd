@@ -1,1 +1,2 @@
 extends MoveAction
+class_name MoveOffBoardAction

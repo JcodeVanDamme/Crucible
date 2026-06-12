@@ -7,7 +7,7 @@ var dices : Dictionary
 var spawnedDie : Dice
 var selectedDie : Dice
 
-var actionQueue : Array[Action]
+var actionQueue : Array
 
 enum Edges {
 	TOP,
@@ -47,7 +47,3 @@ var pushDirection : Vector2:
 var isLaneSelected : bool
 var selectedLaneStartPos : Vector2
 var selectionLocked : bool
-	
-var spawnPos : Vector2:
-	get:
-		return selectedLaneStartPos + pushDirection

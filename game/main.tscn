@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://do8nw6wm14m1f"]
+[gd_scene load_steps=14 format=3 uid="uid://do8nw6wm14m1f"]
 
 [ext_resource type="Script" uid="uid://2hgc6wq0156k" path="res://game/main/board/board_handler.gd" id="2_2fjjk"]
 [ext_resource type="Script" uid="uid://cp6dpd28ofsq6" path="res://game/main/board/board_root.gd" id="3_5un7r"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://oq1ik3meixhh" path="res://game/main/board/visual/board_dices.gd" id="6_xkbyp"]
 [ext_resource type="Script" uid="uid://dop6sbn517uwl" path="res://game/main/board/visual/board_tiles.gd" id="7_wjctj"]
 [ext_resource type="Script" uid="uid://dnjmdwdn8pck6" path="res://game/action_executor.gd" id="8_ioaqv"]
+[ext_resource type="Script" uid="uid://4myarxqqij8t" path="res://game/action_previewer.gd" id="8_li27q"]
 [ext_resource type="Script" uid="uid://cqihgqktbr5rh" path="res://game/main/board/mouse_controller.gd" id="9_lx3aj"]
 [ext_resource type="Script" uid="uid://8xqjigptnyhy" path="res://game/main/board/selection_handler.gd" id="10_ioaqv"]
 [ext_resource type="Script" uid="uid://b5lmpuejyjnno" path="res://game/main/board/camera_handler.gd" id="10_itumj"]
@@ -50,6 +51,9 @@ directional_shadow_mode = 0
 
 [node name="BoardHandler" type="Node" parent="BoardRoot/GameController"]
 script = ExtResource("2_2fjjk")
+
+[node name="ActionPreviewer" type="Node" parent="BoardRoot/GameController"]
+script = ExtResource("8_li27q")
 
 [node name="ActionExecutor" type="Node" parent="BoardRoot/GameController"]
 script = ExtResource("8_ioaqv")

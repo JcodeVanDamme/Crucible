@@ -20,60 +20,75 @@ func buildBoard():
 	state.positionalMatrix = layout
 	
 func assembleActionQueue():
-	pushDice(getDiceChain())
-	events.turn_ended.emit()
+	var dices = getDicesInLane()
+	var actionQueue = processDiceQueue(dices)
+	state.actionQueue = actionQueue
+	events.action_queue_ready.emit()
 		
-func getDiceChain() -> Array:
-	var chain = []
-	var coord = state.spawnPos
+func getDicesInLane() -> Array:
+	var queue = []
 	
+	""" Append the newly spawned Cube """
+	queue.push_front(state.spawnedDie.id)
+	
+	""" Start Loop at Spawned Cube + PushDir """
+	var coord = state.spawnedDie.pos + state.pushDirection
+	
+	""" Keep processing while in Bounds """
 	while checkBounds(coord):
 		var id = state.positionalMatrix.get(coord)
 		if id != null:
-			chain.append(id)
+			queue.push_front(id)
 			coord += state.pushDirection
+			
+			""" Abort when no more Cubes present in Lane """
 		else:
 			break
-	return chain
+			
+	return queue
 	
-func pushDice(chain : Array) -> void:
-	""" Push Dice in Chain from back to front """
-	for i in range(chain.size() - 1, -1, -1):
-		var dice = state.dices.get(chain.get(i))
+func processDiceQueue(dices : Array) -> Array:
+	var actionQueue = []
+
+	for i in range(dices.size()):
 		
+		var id = dices.get(i)
+		var dice = state.dices.get(id)
+		
+		""" Face Logic not implemented yet, Dice move one field toward pushDir """
 		var originalPos = dice.pos
 		var newPos = originalPos + state.pushDirection
 		
-		""" Cube not pushed outside Matrix """
-		if checkBounds(newPos):
-			
-			moveDice(originalPos, newPos)
-			
-		else:
-			""" Cube pushed out of Matrix; delete and Skip """
-			deleteCube(originalPos)
-			continue
-			
-	""" Append new Dice at the Front """
-	state.positionalMatrix.set(state.spawnPos, state.spawnedDie.id)
-	state.dices.get(state.spawnedDie.id).pos = state.spawnPos
-	state.spawnedDie.position = board.toLocalPos(state.spawnedDie.pos, 0)
-	
-func moveDice(from : Vector2, to : Vector2) -> void:
-	var id = state.positionalMatrix.get(from)
-	var dice = state.dices.get(id)
-
-	dice.pos = to
-	
-	state.positionalMatrix.set(to, id)
-	state.positionalMatrix.set(from, null)
-	dice.position = board.toLocalPos(dice.pos, 0)
+		""" Only differentiate if it moves off the board """
+		var action : Action
 		
-func deleteCube(at : Vector2) -> void:
-	var id = state.positionalMatrix.get(at)
-	var die = state.dices.get(id)
-	var parent = die.get_parent() as Node
-	parent.remove_child(die)
+		""" ! Quick Workaround; Spawned die is on Edge -> dont move off board  ! """
+		if !checkBounds(newPos) && id != state.spawnedDie.id:
+			
+			action = Actions.supply(
+				Actions.ActionType.MOVE_OFF_BOARD
+				) as MoveOffBoardAction
+				
+			action.executorId = id
+			action.type = Actions.ActionType.MOVE_OFF_BOARD
+			action.moveFrom = originalPos
+			action.moveTo = newPos
+		
+		else:
+			
+			action = Actions.supply(
+				Actions.ActionType.MOVE
+				) as MoveAction
+				
+			action.executorId = id
+			action.type = Actions.ActionType.MOVE
+			action.moveFrom = originalPos
+			action.moveTo = newPos
+			
+		#actionQueue.push_front(action)
+		actionQueue.append(action)
+		
+	return actionQueue
 		
 func checkBounds(pos) -> bool:
 	if pos.x < 1:

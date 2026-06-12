@@ -24,7 +24,6 @@ var moveTween = Tween.new()
 func _ready() -> void:
 	camera = get_viewport().get_camera_3d()
 	camera.global_position = getAnchorPos()
-	events.camera_update_queried.connect(updateAnchor)
 	
 func _process(_delta: float) -> void:
 	camera.look_at(Vector3.ZERO, Vector3.UP)

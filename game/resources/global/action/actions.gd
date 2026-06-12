@@ -1,4 +1,4 @@
-extends Resource
+extends Node
 
 var moveAction = preload("res://game/resources/global/action/move_action.gd")
 var moveOffBoardAction = preload("res://game/resources/global/action/move_off_board_action.gd")

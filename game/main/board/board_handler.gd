@@ -71,7 +71,7 @@ func processDiceQueue(dices : Array) -> Array:
 				
 			action.executorId = id
 			action.type = Actions.ActionType.MOVE_OFF_BOARD
-			action.moveFrom = originalPos
+			action.originalPos = originalPos
 			action.moveTo = newPos
 		
 		else:
@@ -82,7 +82,7 @@ func processDiceQueue(dices : Array) -> Array:
 				
 			action.executorId = id
 			action.type = Actions.ActionType.MOVE
-			action.moveFrom = originalPos
+			action.originalPos = originalPos
 			action.moveTo = newPos
 			
 		#actionQueue.push_front(action)

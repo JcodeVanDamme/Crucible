@@ -13,6 +13,9 @@ var tiles := {}
 var highlightedTiles
 
 func _ready() -> void:
+	events.selection_locked.connect(clearLaneHighlight)
+	events.selection_unlocked.connect(highlightLane)
+	
 	buildTiles()
 
 func buildTiles() -> void:

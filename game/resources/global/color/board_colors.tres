@@ -10,4 +10,5 @@ tileEdgeColor = Color(0.16438895, 0.22577086, 0.19075686, 1)
 selectionColor = Color(0.8, 0.152, 0.20600009, 1)
 actionMoved = Color(0.47644672, 0.89, 0.2848, 1)
 actionRollOff = Color(0.88, 0.59664, 0.14080003, 1)
+actionMovedOffBoard = Color(0.46033305, 0.07527586, 0.14202502, 1)
 metadata/_custom_type_script = "uid://wshligtjl4oq"

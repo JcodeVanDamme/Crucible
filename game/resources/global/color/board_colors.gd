@@ -13,3 +13,5 @@ class_name BoardColors
 @export var actionMoved : Color
 
 @export var actionRollOff : Color
+
+@export var actionMovedOffBoard : Color

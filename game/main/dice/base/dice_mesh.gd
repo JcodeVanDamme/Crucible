@@ -5,6 +5,8 @@ class_name DiceMesh
 var mat := preload("res://game/resources/material/regular_dice_material.tres").duplicate()
 var colors := preload("res://game/resources/global/color/board_colors.tres")
 
+var color : Color
+
 @export var showOutline := false:
 	set(value):
 		showOutline = value
@@ -25,3 +27,6 @@ func enableOutline() -> void:
 	
 func disabelOutline() -> void:
 	mat.stencil_mode = BaseMaterial3D.STENCIL_MODE_DISABLED
+
+func setColor(color : Color) -> void:
+	mat.albedo_color = color

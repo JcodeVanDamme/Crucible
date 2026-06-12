@@ -8,6 +8,8 @@ var events = preload("res://game/resources/global/event/events.tres")
 var corners : Array
 var lastSelectedCell = Vector2(-1, -1)
 
+var selectionLocked := false
+
 func _ready() -> void:
 	""" Initialize Board Corners """
 	corners = [

@@ -27,6 +27,7 @@ func _process(delta: float) -> void:
 	if !Engine.is_editor_hint():
 		label.look_at(camera.global_position, Vector3.UP)
 		
-func init(id : int) -> void:
+func init(id : int, color : Color) -> void:
 	self.id = id
+	$MeshInstance3D.color = color
 	$Label3D.text = str(id)

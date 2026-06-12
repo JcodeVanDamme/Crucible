@@ -31,7 +31,7 @@ func executeMove(action : MoveAction) -> void:
 	dice.pos = action.moveTo
 	
 	state.positionalMatrix.set(action.moveTo, action.executorId)
-	state.positionalMatrix.set(action.moveFrom, null)
+	state.positionalMatrix.set(action.originalPos, null)
 	dice.position = board.toLocalPos(dice.pos, 0)
 
 func executeMoveOffBoard(action : MoveOffBoardAction) -> void:

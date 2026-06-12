@@ -1,0 +1,11 @@
+@tool
+extends Resource
+class_name BoardColors
+
+@export var cubeColor : Color
+
+@export var tileMainColor : Color
+		
+@export var tileEdgeColor : Color
+		
+@export var selectionColor : Color

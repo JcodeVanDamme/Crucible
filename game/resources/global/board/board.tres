@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Board" load_steps=2 format=3 uid="uid://bpmt5ok6fthdg"]
+
+[ext_resource type="Script" uid="uid://cpe414aadmb7a" path="res://game/resources/global/board/board.gd" id="1_r7pm7"]
+
+[resource]
+script = ExtResource("1_r7pm7")
+dimension = 9
+spacing = 0.1
+cubeSize = 2.0
+metadata/_custom_type_script = "uid://cpe414aadmb7a"

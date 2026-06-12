@@ -10,10 +10,10 @@ config_version=5
 
 [application]
 
-config/name="projectCrucible"
+config/name="Crucible"
 run/main_scene="uid://do8nw6wm14m1f"
 config/features=PackedStringArray("4.5", "GL Compatibility")
-config/icon="res://game/icon.svg"
+config/icon="uid://bhf3m377rxou7"
 
 [display]
 

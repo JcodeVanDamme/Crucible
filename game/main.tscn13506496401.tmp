@@ -1,0 +1,65 @@
+[gd_scene load_steps=12 format=3 uid="uid://do8nw6wm14m1f"]
+
+[ext_resource type="Script" uid="uid://2hgc6wq0156k" path="res://game/main/board_logic.gd" id="2_2fjjk"]
+[ext_resource type="Script" uid="uid://cp6dpd28ofsq6" path="res://game/board_root.gd" id="3_5un7r"]
+[ext_resource type="PackedScene" uid="uid://cwt2bxtuhioe7" path="res://game/ui/ui.tscn" id="3_emt18"]
+[ext_resource type="Script" uid="uid://clsrf4rbrfwna" path="res://game/main/input_handler.gd" id="5_dp3pf"]
+[ext_resource type="Script" uid="uid://cmqqgfjooodwm" path="res://game/main/dice_supplier.gd" id="6_dp3pf"]
+[ext_resource type="Script" uid="uid://oq1ik3meixhh" path="res://game/main/board_dices.gd" id="6_xkbyp"]
+[ext_resource type="Script" uid="uid://dop6sbn517uwl" path="res://game/main/board_tiles.gd" id="7_wjctj"]
+[ext_resource type="Script" uid="uid://cqihgqktbr5rh" path="res://game/main/mouse_controller.gd" id="9_lx3aj"]
+[ext_resource type="Script" uid="uid://8xqjigptnyhy" path="res://game/main/selection_handler.gd" id="10_ioaqv"]
+[ext_resource type="Script" uid="uid://b5lmpuejyjnno" path="res://game/main/camera_handler.gd" id="10_itumj"]
+[ext_resource type="Script" uid="uid://bme0bon4wxdiy" path="res://game/main/game_controller.gd" id="12_li27q"]
+
+[node name="Main" type="Node3D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" parent="CanvasLayer" instance=ExtResource("3_emt18")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+
+[node name="BoardRoot" type="Node3D" parent="."]
+script = ExtResource("3_5un7r")
+
+[node name="GameController" type="Node" parent="BoardRoot"]
+script = ExtResource("12_li27q")
+
+[node name="InputHandler" type="Node" parent="BoardRoot/GameController"]
+script = ExtResource("5_dp3pf")
+
+[node name="MouseController" type="Node" parent="BoardRoot/GameController/InputHandler"]
+script = ExtResource("9_lx3aj")
+
+[node name="CameraHandler" type="Node3D" parent="BoardRoot/GameController"]
+script = ExtResource("10_itumj")
+
+[node name="Camera3D" type="Camera3D" parent="BoardRoot/GameController/CameraHandler"]
+transform = Transform3D(0.7071068, 0.2534044, -0.660141, 2.7822852e-08, 0.9335804, 0.35836798, 0.7071068, -0.25340447, 0.660141, -22.5, 13.000001, 22.5)
+projection = 1
+size = 18.0
+near = 0.001
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="BoardRoot/GameController/CameraHandler/Camera3D"]
+transform = Transform3D(-0.9017074, 0.42260912, -0.091242015, -0.33728537, -0.5555728, 0.7599852, 0.27048504, 0.71605897, 0.643504, 0, 0, 0)
+light_energy = 2.0
+shadow_enabled = true
+directional_shadow_mode = 0
+
+[node name="BoardHandler" type="Node" parent="BoardRoot/GameController"]
+script = ExtResource("2_2fjjk")
+
+[node name="Visuals" type="Node3D" parent="BoardRoot/GameController"]
+
+[node name="Dices" type="Node3D" parent="BoardRoot/GameController/Visuals"]
+script = ExtResource("6_xkbyp")
+
+[node name="Tiles" type="Node3D" parent="BoardRoot/GameController/Visuals"]
+script = ExtResource("7_wjctj")
+
+[node name="SelectionHandler" type="Node" parent="BoardRoot/GameController"]
+script = ExtResource("10_ioaqv")
+
+[node name="DiceSupplier" type="Node" parent="BoardRoot/GameController"]
+script = ExtResource("6_dp3pf")

@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="BoardState" load_steps=2 format=3 uid="uid://b84tlkdqy5sst"]
+
+[ext_resource type="Script" uid="uid://drbdcbo86015c" path="res://game/board_state.gd" id="1_d43t2"]
+
+[resource]
+script = ExtResource("1_d43t2")
+metadata/_custom_type_script = "uid://drbdcbo86015c"

@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="Turn" load_steps=2 format=3 uid="uid://cu4w72e6dwxo1"]
-
-[ext_resource type="Script" uid="uid://twh4uvtloiku" path="res://game/events.gd" id="1_ugugt"]
-
-[resource]
-script = ExtResource("1_ugugt")
-metadata/_custom_type_script = "uid://twh4uvtloiku"

@@ -9,3 +9,7 @@ class_name BoardColors
 @export var tileEdgeColor : Color
 		
 @export var selectionColor : Color
+
+@export var actionMoved : Color
+
+@export var actionRollOff : Color

@@ -43,8 +43,8 @@ var pushDirection : Vector2:
 		return Vector2.ZERO
 
 var isLaneSelected : bool
-
 var selectedLaneStartPos : Vector2
+var selectionLocked : bool
 	
 var spawnPos : Vector2:
 	get:

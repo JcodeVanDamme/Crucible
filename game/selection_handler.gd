@@ -3,6 +3,7 @@ class_name SelectionHandler
 
 var state = preload("res://game/board_state.tres")
 var board = preload("res://game/board.tres")
+var events = preload("res://game/events.tres")
 
 var boardTiles : BoardTiles
 

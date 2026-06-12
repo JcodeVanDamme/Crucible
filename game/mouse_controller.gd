@@ -1,14 +1,13 @@
-@tool
 extends Node
 class_name MouseController
 
 var state = preload("res://game/board_state.tres")
 var board = preload("res://game/board.tres")
+var events = preload("res://game/events.tres") 
 
 var corners : Array
 var lastSelectedCell = Vector2(-1, -1)
 
-signal selectionChanged()
 signal selectedEdge(pos : Vector2)
 signal selectedInner(pos : Vector2)
 signal selectedNone()
@@ -20,6 +19,10 @@ func _ready() -> void:
 		Vector2(board.dimension - 1, 0),
 		Vector2(board.dimension - 1, board.dimension - 1)
 	]
+	
+func _process(delta: float) -> void:
+	if !state.selectionLocked:
+		updateMouseSelection()
 
 func updateMouseSelection() -> void:
 	var cell = getHoveredCell()

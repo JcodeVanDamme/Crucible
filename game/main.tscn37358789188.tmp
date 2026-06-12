@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://cqihgqktbr5rh" path="res://game/mouse_controller.gd" id="9_lx3aj"]
 [ext_resource type="Script" uid="uid://8xqjigptnyhy" path="res://game/selection_handler.gd" id="10_ioaqv"]
 [ext_resource type="Script" uid="uid://b5lmpuejyjnno" path="res://game/camera_controller.gd" id="10_itumj"]
-[ext_resource type="Script" uid="uid://bme0bon4wxdiy" path="res://game/game_controller.gd" id="12_li27q"]
+[ext_resource type="Script" uid="uid://bme0bon4wxdiy" path="res://game/turn_manager.gd" id="12_li27q"]
 
 [node name="Main" type="Node3D"]
 
@@ -23,13 +23,16 @@
 [node name="BoardRoot" type="Node3D" parent="."]
 script = ExtResource("3_5un7r")
 
-[node name="GameController" type="Node" parent="BoardRoot" node_paths=PackedStringArray("dices", "mouseController", "selectionHandler", "diceSupplier", "boardTiles")]
+[node name="TurnManager" type="Node" parent="BoardRoot" node_paths=PackedStringArray("board", "mouseController", "selectionHandler", "boardHandler", "diceSupplier", "cameraController", "boardTiles", "boardDices")]
 script = ExtResource("12_li27q")
-dices = NodePath("../Visuals/Cubes")
+board = NodePath("../Board")
 mouseController = NodePath("../MouseController")
 selectionHandler = NodePath("../SelectionHandler")
+boardHandler = NodePath("")
 diceSupplier = NodePath("../DiceSupplier")
+cameraController = NodePath("../CameraController")
 boardTiles = NodePath("../Visuals/Tiles")
+boardDices = NodePath("../Visuals/Cubes")
 
 [node name="Visuals" type="Node3D" parent="BoardRoot"]
 

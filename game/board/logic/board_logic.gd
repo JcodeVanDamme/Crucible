@@ -4,10 +4,11 @@ class_name BoardLogic
 
 var board = preload("res://game/board.tres")
 var state = preload("res://game/board_state.tres")
+var events = preload("res://game/events.tres")
 
-signal cubeMoved(id : int)
-signal cubeLeftBoard(id : int)
-signal finished()
+func _ready() -> void:
+	events.selection_executed.connect(activateCube)
+	buildBoard()
 
 func buildBoard():
 	var layout = {}
@@ -19,18 +20,8 @@ func buildBoard():
 	state.positionalMatrix = layout
 	
 func activateCube():
-	""" First Dice in Lane """
-	if state.positionalMatrix.get(state.spawnPos) == null:
-		state.positionalMatrix.set(state.spawnPos, state.spawnedDie.id)
-		state.dices.get(state.spawnedDie.id).pos = state.spawnPos
-		cubeMoved.emit(state.spawnedDie.id)
-		finished.emit()
-		
-	else:
-		""" Dice present in Lane """
-		var chain = getDiceChain()
-		pushDice(chain)
-		finished.emit()
+	pushDice(getDiceChain())
+	events.turn_ended.emit()
 		
 func getDiceChain() -> Array:
 	var chain = []
@@ -66,7 +57,7 @@ func pushDice(chain : Array) -> void:
 	""" Append new Dice at the Front """
 	state.positionalMatrix.set(state.spawnPos, state.spawnedDie.id)
 	state.dices.get(state.spawnedDie.id).pos = state.spawnPos
-	cubeMoved.emit(state.spawnedDie.id)
+	state.spawnedDie.position = board.toLocalPos(state.spawnedDie.pos, 0)
 	
 func moveDice(from : Vector2, to : Vector2) -> void:
 	var id = state.positionalMatrix.get(from)
@@ -76,11 +67,13 @@ func moveDice(from : Vector2, to : Vector2) -> void:
 	
 	state.positionalMatrix.set(to, id)
 	state.positionalMatrix.set(from, null)
-	cubeMoved.emit(id)
+	dice.position = board.toLocalPos(dice.pos, 0)
 		
 func deleteCube(at : Vector2) -> void:
 	var id = state.positionalMatrix.get(at)
-	cubeLeftBoard.emit(id)
+	var die = state.dices.get(id)
+	var parent = die.get_parent() as Node
+	parent.remove_child(die)
 		
 func checkBounds(pos) -> bool:
 	if pos.x < 1:

@@ -7,9 +7,13 @@ var tileScene = preload("res://game/board/visuals/tile/Tile.tscn")
 var state = preload("res://game/board_state.tres")
 var board = preload("res://game/board.tres")
 var colors := preload("res://game/board_colors.tres")
+var events = preload("res://game/events.tres") 
 
 var tiles := {}
 var highlightedTiles
+
+func _ready() -> void:
+	buildTiles()
 
 func buildTiles() -> void:
 	tiles.clear()

@@ -5,6 +5,7 @@ const ORBIT_RADIUS := 30.0
 const HEIGHT := 13.0
 
 var board := preload("res://game/board.tres")
+var events = preload("res://game/events.tres") 
 
 var camera : Camera3D
 var radius := 20.0
@@ -23,6 +24,7 @@ var moveTween = Tween.new()
 func _ready() -> void:
 	camera = get_viewport().get_camera_3d()
 	camera.global_position = getAnchorPos()
+	events.camera_update_queried.connect(updateAnchor)
 	
 func _process(_delta: float) -> void:
 	camera.look_at(Vector3.ZERO, Vector3.UP)

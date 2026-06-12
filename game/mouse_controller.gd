@@ -32,9 +32,8 @@ func updateMouseSelection() -> void:
 			events.selection_changed_inner.emit(cell)
 					
 	elif cell == Vector2(-1, -1):
-		
 		lastSelectedCell = null
-		events.selection_changed_none.emit(cell)
+		events.selection_changed_none.emit()
 		
 func getHoveredCell() -> Vector2:
 	var hit = getMouseHit()

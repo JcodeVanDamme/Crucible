@@ -13,6 +13,7 @@ func _ready() -> void:
 	events.selection_changed_none.connect(handleNoSelection)
 
 func handleNoSelection() -> void:
+	print("handling none")
 	resetSelection()
 
 func handleEdgeSelection(pos : Vector2) -> void:
@@ -53,6 +54,7 @@ func handleInnerSelection(pos : Vector2) -> void:
 	state.selectedDie = die
 	
 func resetSelection() -> void:
+	print("reset")
 	state.isLaneSelected = false
 	state.spawnedDie.visible = false
 	state.spawnedDie.mesh.disabelOutline()

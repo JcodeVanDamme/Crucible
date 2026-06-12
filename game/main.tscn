@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://dop6sbn517uwl" path="res://game/board/visuals/tile/board_tiles.gd" id="7_wjctj"]
 [ext_resource type="Script" uid="uid://cqihgqktbr5rh" path="res://game/mouse_controller.gd" id="9_lx3aj"]
 [ext_resource type="Script" uid="uid://8xqjigptnyhy" path="res://game/selection_handler.gd" id="10_ioaqv"]
-[ext_resource type="Script" uid="uid://b5lmpuejyjnno" path="res://game/camera_controller.gd" id="10_itumj"]
+[ext_resource type="Script" uid="uid://b5lmpuejyjnno" path="res://game/camera_handler.gd" id="10_itumj"]
 [ext_resource type="Script" uid="uid://bme0bon4wxdiy" path="res://game/game_controller.gd" id="12_li27q"]
 
 [node name="Main" type="Node3D"]
@@ -23,12 +23,8 @@
 [node name="BoardRoot" type="Node3D" parent="."]
 script = ExtResource("3_5un7r")
 
-[node name="GameController" type="Node" parent="BoardRoot" node_paths=PackedStringArray("dices", "selectionHandler", "diceSupplier", "boardTiles")]
+[node name="GameController" type="Node" parent="BoardRoot"]
 script = ExtResource("12_li27q")
-dices = NodePath("Visuals/Cubes")
-selectionHandler = NodePath("SelectionHandler")
-diceSupplier = NodePath("DiceSupplier")
-boardTiles = NodePath("Visuals/Tiles")
 
 [node name="InputHandler" type="Node" parent="BoardRoot/GameController"]
 script = ExtResource("5_dp3pf")
@@ -56,7 +52,7 @@ script = ExtResource("2_2fjjk")
 
 [node name="Visuals" type="Node3D" parent="BoardRoot/GameController"]
 
-[node name="Cubes" type="Node3D" parent="BoardRoot/GameController/Visuals"]
+[node name="Dices" type="Node3D" parent="BoardRoot/GameController/Visuals"]
 script = ExtResource("6_xkbyp")
 
 [node name="Tiles" type="Node3D" parent="BoardRoot/GameController/Visuals"]

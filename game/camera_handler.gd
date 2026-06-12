@@ -1,5 +1,5 @@
 extends Node3D
-class_name CameraController
+class_name CameraHandler
 
 const ORBIT_RADIUS := 30.0
 const HEIGHT := 13.0

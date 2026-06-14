@@ -14,4 +14,4 @@ signal selection_changed_none
 
 signal turn_ended
 
-signal action_queue_ready
+signal preview_ready

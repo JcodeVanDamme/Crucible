@@ -6,7 +6,7 @@ var events = preload("res://game/resources/global/event/events.tres")
 var colors := preload("res://game/resources/global/color/board_colors.tres")
 
 func _ready() -> void:
-	events.action_queue_ready.connect(previewActions)
+	events.preview_ready.connect(previewActions)
 	events.selection_unlocked.connect(revertPreview)
 	events.selection_executed.connect(resetColors)
 

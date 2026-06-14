@@ -11,11 +11,9 @@ var board := preload("res://game/resources/global/board/board.tres")
 
 var id : int
 var pos : Vector2
-var camera : Camera3D
 
 func _ready() -> void:
 	resizeMesh()
-	camera = get_viewport().get_camera_3d()
 
 func resizeMesh() -> void:
 	var aabb = mesh.mesh.get_aabb()
@@ -25,6 +23,7 @@ func resizeMesh() -> void:
 			
 func _process(delta: float) -> void:
 	if !Engine.is_editor_hint():
+		var camera = get_viewport().get_camera_3d()
 		label.look_at(camera.global_position, Vector3.UP)
 		
 func init(id : int, color : Color) -> void:

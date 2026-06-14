@@ -13,8 +13,9 @@ var tiles := {}
 var highlightedTiles
 
 func _ready() -> void:
-	events.selection_locked.connect(clearLaneHighlight)
-	events.selection_unlocked.connect(highlightLane)
+	if !Engine.is_editor_hint():
+		events.selection_locked.connect(clearLaneHighlight)
+		events.selection_unlocked.connect(highlightLane)
 	
 	buildTiles()
 

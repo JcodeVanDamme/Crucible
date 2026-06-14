@@ -13,7 +13,6 @@ func _ready() -> void:
 func executeQueriedActions() -> void:
 	var actions = state.actionQueue
 	
-	""" Push Dice in Chain from back to front """
 	for i in range(actions.size()):
 		var action = actions.get(i) as Action
 		
@@ -26,12 +25,13 @@ func executeQueriedActions() -> void:
 				executeMoveOffBoard(action)
 				
 	
+	""" To update the State just overwrite it with the pre calcualted Preview """
+	state.positionalMatrix = state.previewMatrix
+				
+	
 func executeMove(action : MoveAction) -> void:
 	var dice = state.dices.get(action.executorId)
 	dice.pos = action.moveTo
-	
-	state.positionalMatrix.set(action.moveTo, action.executorId)
-	state.positionalMatrix.set(action.originalPos, null)
 	dice.position = board.toLocalPos(dice.pos, 0)
 
 func executeMoveOffBoard(action : MoveOffBoardAction) -> void:

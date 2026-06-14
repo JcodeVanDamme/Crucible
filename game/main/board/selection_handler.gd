@@ -43,20 +43,27 @@ func handleEdgeSelection(pos : Vector2) -> void:
 func handleInnerSelection(pos : Vector2) -> void:
 	resetSelection()
 
-	var id = state.positionalMatrix.get(pos)
+	""" If the selection is locked and a preview State present, check against it """
+	var id
+	if state.previewMatrix != null:
+		id = state.previewMatrix.get(pos)
+	else:
+		id = state.positionalMatrix.get(pos)
+
 	if id == null:
 		handleNoSelection()
 		return
 		
-	var die = state.dices.get(id) as Dice
+	var die := state.dices.get(id) as Dice
 	
 	die.mesh.enableOutline()
 	state.selectedDie = die
 	
 func resetSelection() -> void:
-	state.isLaneSelected = false
-	state.spawnedDie.visible = false
-	state.spawnedDie.mesh.disabelOutline()
+	if !state.selectionLocked:
+		state.isLaneSelected = false
+		state.spawnedDie.visible = false
+		state.spawnedDie.mesh.disabelOutline()
 
 	if state.selectedDie:
 		state.selectedDie.mesh.disabelOutline()

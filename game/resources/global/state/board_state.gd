@@ -2,6 +2,8 @@ extends Resource
 class_name BoardState
 
 var positionalMatrix : Dictionary
+var previewMatrix = null
+
 var dices : Dictionary
 
 var spawnedDie : Dice

@@ -1,4 +1,3 @@
-@tool
 extends Node
 class_name BoardLogic
 
@@ -7,11 +6,18 @@ var state = preload("res://game/resources/global/state/board_state.tres")
 var events = preload("res://game/resources/global/event/events.tres")
 
 func _ready() -> void:
-	events.selection_locked.connect(assembleActionQueue)
+	events.selection_locked.connect(func():
+		assembleActionQueue()
+		assemblePreviewMatrix()
+		events.preview_ready.emit()
+	)
+	events.selection_unlocked.connect(func():
+		state.previewMatrix = null
+	)
 	buildBoard()
 
 func buildBoard():
-	var layout = {}
+	var layout := {}
 	for x in range(board.dimension):
 		for y in range(board.dimension):
 			
@@ -20,13 +26,12 @@ func buildBoard():
 	state.positionalMatrix = layout
 	
 func assembleActionQueue():
-	var dices = getDicesInLane()
-	var actionQueue = processDiceQueue(dices)
+	var dices : Array = getDicesInLane()
+	var actionQueue : Array = processDiceQueue(dices)
 	state.actionQueue = actionQueue
-	events.action_queue_ready.emit()
 		
 func getDicesInLane() -> Array:
-	var queue = []
+	var queue := []
 	
 	""" Append the newly spawned Cube """
 	queue.push_front(state.spawnedDie.id)
@@ -100,3 +105,19 @@ func checkBounds(pos) -> bool:
 	if pos.y > board.dimension - 2:
 		return false
 	return true
+	
+func assemblePreviewMatrix() -> void:
+	var matrix = state.positionalMatrix.duplicate()
+	
+	for i in range(state.actionQueue.size()):
+		var action := state.actionQueue.get(i) as Action
+		
+		match action.type:
+			
+			Actions.ActionType.MOVE, Actions.ActionType.MOVE_OFF_BOARD:
+			
+				var moveAction := action as MoveAction
+				matrix.set(moveAction.originalPos, null)
+				matrix.set(moveAction.moveTo, moveAction.executorId)
+	
+	state.previewMatrix = matrix

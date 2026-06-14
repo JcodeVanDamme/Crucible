@@ -8,8 +8,6 @@ var events = preload("res://game/resources/global/event/events.tres")
 var corners : Array
 var lastSelectedCell = Vector2(-1, -1)
 
-var selectionLocked := false
-
 func _ready() -> void:
 	""" Initialize Board Corners """
 	corners = [
@@ -20,20 +18,22 @@ func _ready() -> void:
 	]
 	
 func _process(delta: float) -> void:
-	if !state.selectionLocked:
-		updateMouseSelection()
+	updateMouseSelection()
 
 func updateMouseSelection() -> void:
-	var cell = getHoveredCell()
+	var cell : Vector2 = getHoveredCell()
+	
+	""" Only Process Cell if its on the Board and not the one processed before """
 	if cell != Vector2(-1, -1) && cell != lastSelectedCell:
 
 		lastSelectedCell = cell
 		
-		if onEdge(cell):
+		""" Skip Edge Tiles if a Selection is currently locked """
+		if onEdge(cell) && !state.selectionLocked:
 			events.selection_changed_edge.emit(cell)
 		else:
 			events.selection_changed_inner.emit(cell)
-			
+		
 	elif cell == Vector2(-1, -1):
 		lastSelectedCell = null
 		events.selection_changed_none.emit()

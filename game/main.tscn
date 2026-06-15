@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://dnjmdwdn8pck6" path="res://game/action_executor.gd" id="8_ioaqv"]
 [ext_resource type="Script" uid="uid://4myarxqqij8t" path="res://game/action_previewer.gd" id="8_li27q"]
 [ext_resource type="Script" uid="uid://cqihgqktbr5rh" path="res://game/main/board/mouse_controller.gd" id="9_lx3aj"]
-[ext_resource type="Script" uid="uid://bcxwolim5wjlw" path="res://game/animation_handler.gd" id="10_g6fv7"]
+[ext_resource type="Script" uid="uid://bcxwolim5wjlw" path="res://game/preview_animation_handler.gd" id="10_g6fv7"]
 [ext_resource type="Script" uid="uid://8xqjigptnyhy" path="res://game/main/board/selection_handler.gd" id="10_ioaqv"]
 [ext_resource type="Script" uid="uid://b5lmpuejyjnno" path="res://game/main/board/camera_handler.gd" id="10_itumj"]
 [ext_resource type="Script" uid="uid://bme0bon4wxdiy" path="res://game/main/board/game_controller.gd" id="12_li27q"]
@@ -56,11 +56,11 @@ script = ExtResource("2_2fjjk")
 [node name="ActionPreviewer" type="Node" parent="BoardRoot/GameController"]
 script = ExtResource("8_li27q")
 
+[node name="Animations" type="Node" parent="BoardRoot/GameController/ActionPreviewer"]
+script = ExtResource("10_g6fv7")
+
 [node name="ActionExecutor" type="Node" parent="BoardRoot/GameController"]
 script = ExtResource("8_ioaqv")
-
-[node name="AnimationHandler" type="Node" parent="BoardRoot/GameController"]
-script = ExtResource("10_g6fv7")
 
 [node name="Visuals" type="Node3D" parent="BoardRoot/GameController"]
 

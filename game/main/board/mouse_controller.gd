@@ -16,6 +16,9 @@ func _ready() -> void:
 		Vector2(board.dimension - 1, 0),
 		Vector2(board.dimension - 1, board.dimension - 1)
 	]
+	events.turn_started.connect(func():
+		lastSelectedCell = Vector2(-1, -1)
+	)
 	
 func _process(delta: float) -> void:
 	updateMouseSelection()

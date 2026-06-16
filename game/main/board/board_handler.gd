@@ -75,12 +75,10 @@ func processDiceQueue(dices : Array) -> Array:
 				) as MoveOffBoardAction
 				
 			action.executorId = id
-			action.pos = originalPos
-			action.rot = dice.mesh.rotation
-			
 			action.type = Actions.ActionType.MOVE_OFF_BOARD
+			action.moveFrom = originalPos
 			action.moveTo = newPos
-		
+					
 		else:
 			
 			action = Actions.supply(
@@ -88,10 +86,8 @@ func processDiceQueue(dices : Array) -> Array:
 				) as MoveAction
 			
 			action.executorId = id
-			action.pos = originalPos
-			action.rot = dice.mesh.rotation
-			
 			action.type = Actions.ActionType.MOVE
+			action.moveFrom = originalPos
 			action.moveTo = newPos
 			
 
@@ -121,7 +117,7 @@ func assemblePreviewMatrix() -> void:
 			Actions.ActionType.MOVE, Actions.ActionType.MOVE_OFF_BOARD:
 			
 				var moveAction := action as MoveAction
-				matrix.set(moveAction.pos, null)
+				matrix.set(moveAction.moveFrom, null)
 				matrix.set(moveAction.moveTo, moveAction.executorId)
 	
 	state.previewMatrix = matrix

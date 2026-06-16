@@ -30,11 +30,11 @@ func executeQueriedActions() -> void:
 				
 	
 func executeMove(action : MoveAction) -> void:
-	var dice = state.dices.get(action.executorId)
+	var dice: Dice = action.executor
 	dice.pos = action.moveTo
 	dice.position = board.toLocalPos(dice.pos, 0)
 
 func executeMoveOffBoard(action : MoveOffBoardAction) -> void:
-	var dice = state.dices.get(action.executorId)
+	var dice: Dice = action.executor
 	var parent = dice.get_parent() as Node
 	parent.remove_child(dice)

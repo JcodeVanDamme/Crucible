@@ -49,17 +49,3 @@ var pushDirection : Vector2:
 var isLaneSelected : bool
 var selectedLaneStartPos : Vector2
 var selectionLocked : bool
-
-var rollAxis: Vector3:
-	get:
-		match currentEdge:
-			Edges.TOP:
-				return Vector3.RIGHT
-			Edges.BOTTOM:
-				return Vector3.LEFT
-			Edges.LEFT:
-				return Vector3.FORWARD
-			Edges.RIGHT:
-				return Vector3.BACK
-				
-		return Vector3.ZERO

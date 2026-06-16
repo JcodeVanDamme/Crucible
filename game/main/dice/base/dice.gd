@@ -14,13 +14,6 @@ var id: int
 var pos: Vector2
 
 var tween: Tween
-var orientation: Basis = Basis.IDENTITY
-
-var rotating: bool = false
-var rotationAxis: Vector3
-var rotationProgress: float = 0.0
-var startOrientation: Basis
-var targetOrientation: Basis
 
 func _ready() -> void:
 	resizeMesh()
@@ -36,23 +29,12 @@ func _process(delta: float) -> void:
 		var camera: Camera3D = get_viewport().get_camera_3d()
 		label.look_at(camera.global_position, Vector3.UP)
 		
-	if rotating:
-		orientation = startOrientation.slerp(targetOrientation, rotationProgress)
-		mesh.basis = orientation
-	if rotationProgress >= 1.0:
-		rotating = false
-		orientation = targetOrientation
-		
 func init(cubeId: int, baseColor: Color) -> void:
-	self.id = cubeId
+	id = cubeId
 	$MeshInstance3D.color = baseColor
 	$Label3D.text = str(id)
-	
-func initRoll(step: int) -> void:
-	rotationProgress = 0.0
-	rotationAxis = state.rollAxis
-	var angle: float = deg_to_rad(90 * step)
-	var rot: Basis = Basis(rotationAxis, angle)
-	startOrientation = orientation
-	targetOrientation = rot * orientation
-	rotating = true
+
+func startTween() -> void:
+	if tween:
+		tween.kill()
+	tween = get_tree().create_tween()

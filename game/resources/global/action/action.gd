@@ -7,7 +7,7 @@ var board = preload("res://game/resources/global/board/board.tres")
 var events = preload("res://game/resources/global/event/events.tres")
 var colors = preload("res://game/resources/global/color/board_colors.tres")
 
-var executorId: int
+var executor: Dice
 var type: int
 
 var previewAnimation: Callable

@@ -10,7 +10,7 @@ var colors := preload("res://game/resources/global/color/board_colors.tres")
 var diceId := 1
 
 func determineDie() -> Dice:
-	var dice = diceScene.instantiate()
+	var dice: Dice = diceScene.instantiate()
 	dice.init(diceId, colors.cubeColor)
 	diceId += 1
 	return dice

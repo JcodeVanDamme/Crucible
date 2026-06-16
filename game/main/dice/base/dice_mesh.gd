@@ -4,8 +4,24 @@ class_name DiceMesh
 
 var mat := preload("res://game/resources/material/regular_dice_material.tres").duplicate()
 var colors := preload("res://game/resources/global/color/board_colors.tres")
+var state := preload("res://game/resources/global/state/board_state.tres")
 
-var color : Color
+var color: Color
+var targetBasis: Basis
+
+var rollAxis: Vector3:
+	get:
+		match state.currentEdge:
+			state.Edges.TOP:
+				return Vector3.RIGHT
+			state.Edges.BOTTOM:
+				return Vector3.LEFT
+			state.Edges.LEFT:
+				return Vector3.FORWARD
+			state.Edges.RIGHT:
+				return Vector3.BACK
+				
+		return Vector3.ZERO
 
 @export var showOutline := false:
 	set(value):
@@ -20,6 +36,12 @@ func _ready() -> void:
 	set_surface_override_material(0, mat)
 	mat.stencil_mode = BaseMaterial3D.STENCIL_MODE_DISABLED
 	mat.albedo_color = colors.cubeColor
+
+func _process(delta: float) -> void:
+	updateRotation()
+	
+func updateRotation() -> void:
+	pass
 	
 func enableOutline() -> void:
 	mat.stencil_mode = BaseMaterial3D.STENCIL_MODE_OUTLINE

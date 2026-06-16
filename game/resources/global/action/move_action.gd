@@ -9,44 +9,58 @@ var moveTo : Vector2
 
 func _init() -> void:
 
-	previewAnimation = func(queuePos: int):
-
-		var dice:Dice = state.dices.get(executorId)
-		if dice.tween:
-			dice.tween.kill()
-		dice.tween = dice.get_tree().create_tween()
+	previewAnimation = func(queuePos: int):		
+		initTween()
+		var duration:float = MOVE_DURATION + queuePos * INCREASE
 		
-		dice.tween.set_trans(Tween.TRANS_SPRING)
-		dice.tween.set_ease(Tween.EASE_OUT)
+		move(moveTo, duration)
+		roll(duration, false)
 		
-		dice.tween.tween_property(
-			dice,
-			"position",
-			board.toLocalPos(moveTo, 0),
-			MOVE_DURATION + queuePos * INCREASE
-		)
-		
-		dice.mesh.setColor(colors.actionMoved)
+		executor.mesh.setColor(colors.actionMoved)
 		
 	reverseAnimation = func(queuePos: int):
-
-		var dice:Dice = state.dices.get(executorId)
-		if dice.tween:
-			dice.tween.kill()
-		dice.tween = dice.get_tree().create_tween()
+		initTween()
+		var duration = MOVE_DURATION + (state.actionQueue.size() - 1 - queuePos) * INCREASE
 		
-		dice.tween.set_trans(Tween.TRANS_SPRING)
-		dice.tween.set_ease(Tween.EASE_OUT)
+		move(moveFrom, duration)
+		roll(duration, true)
 		
-		dice.tween.tween_property(
-			dice,
-			"position",
-			board.toLocalPos(moveFrom, 0),
-			MOVE_DURATION + (state.actionQueue.size() - 1 - queuePos) * INCREASE
-		)
-		
-		dice.mesh.setColor(dice.mesh.color)
+		executor.mesh.setColor(executor.mesh.color)
 	
 	executionAnimation = func(queuePos: int):
-		var dice:Dice = state.dices.get(executorId)
-		dice.mesh.setColor(dice.mesh.color)
+		executor.mesh.setColor(executor.mesh.color)
+	
+func initTween() -> void:
+	executor.startTween()
+	executor.tween.set_trans(Tween.TRANS_SPRING)
+	executor.tween.set_ease(Tween.EASE_OUT)	
+
+func move(pos:Vector2, duration:float) -> void:
+	executor.tween.parallel().tween_property(
+		executor,
+		"position",
+		board.toLocalPos(pos, 0),
+		duration
+	)
+	
+func roll(duration:float, reverse:bool) -> void:
+	var startBasis:Basis = executor.mesh.targetBasis
+	var rot:Basis
+	
+	if !reverse:
+		rot = Basis(executor.mesh.rollAxis, PI / 2.0)
+	else:
+		rot = Basis(executor.mesh.rollAxis, -PI / 2.0)
+	
+	executor.mesh.targetBasis = rot * startBasis
+	
+	executor.tween.parallel().tween_method(
+		func(t):
+			executor.mesh.basis = startBasis.slerp(
+				executor.mesh.targetBasis,
+				t
+			),
+			0.0,
+			1.0,
+			duration
+		)

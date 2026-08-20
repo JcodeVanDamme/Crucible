@@ -23,6 +23,9 @@ func executeQueriedActions() -> void:
 				
 			Actions.ActionType.MOVE_OFF_BOARD:
 				executeMoveOffBoard(action)
+			
+		
+		action.executor.diceData.faces.applyPreview()
 				
 	
 	""" To update the State just overwrite it with the pre calcualted Preview """

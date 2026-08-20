@@ -9,20 +9,6 @@ var state := preload("res://game/resources/global/state/board_state.tres")
 var color: Color
 var targetBasis: Basis
 
-var rollAxis: Vector3:
-	get:
-		match state.currentEdge:
-			state.Edges.TOP:
-				return Vector3.RIGHT
-			state.Edges.BOTTOM:
-				return Vector3.LEFT
-			state.Edges.LEFT:
-				return Vector3.FORWARD
-			state.Edges.RIGHT:
-				return Vector3.BACK
-				
-		return Vector3.ZERO
-
 @export var showOutline := false:
 	set(value):
 		showOutline = value

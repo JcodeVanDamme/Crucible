@@ -7,13 +7,9 @@ var events = preload("res://game/resources/global/event/events.tres")
 
 var boardTiles : BoardTiles
 
-func _ready() -> void:
-	events.selection_changed_edge.connect(handleEdgeSelection)
-	events.selection_changed_inner.connect(handleInnerSelection)
-	events.selection_changed_none.connect(handleNoSelection)
-
 func handleNoSelection() -> void:
 	resetSelection()
+	events.selection_changed_none.emit()
 
 func handleEdgeSelection(pos : Vector2) -> void:
 	resetSelection()
@@ -39,6 +35,8 @@ func handleEdgeSelection(pos : Vector2) -> void:
 	state.spawnedDie.mesh.enableOutline()
 	state.isLaneSelected = true
 	boardTiles.highlightLane()
+	
+	events.selection_changed_edge.emit()
 
 func handleInnerSelection(pos : Vector2) -> void:
 	resetSelection()
@@ -58,6 +56,8 @@ func handleInnerSelection(pos : Vector2) -> void:
 	
 	die.mesh.enableOutline()
 	state.selectedDie = die
+	
+	events.selection_changed_inner.emit()
 	
 func resetSelection() -> void:
 	if !state.selectionLocked:

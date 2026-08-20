@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://qeuldd1gjpla"
+path="res://.godot/imported/dice_purple.obj-9f2ee6256db9d3d4274912aea6a2872b.mesh"
+
+[deps]
+
+files=["res://.godot/imported/dice_purple.obj-9f2ee6256db9d3d4274912aea6a2872b.mesh"]
+
+source_file="res://assets/starter_3d_dice_pack/dice_purple.obj"
+dest_files=["res://.godot/imported/dice_purple.obj-9f2ee6256db9d3d4274912aea6a2872b.mesh", "res://.godot/imported/dice_purple.obj-9f2ee6256db9d3d4274912aea6a2872b.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

@@ -46,6 +46,25 @@ var pushDirection : Vector2:
 				return Vector2(-1, 0)
 		return Vector2.ZERO
 
+
+var rollAxis: Vector3:
+	get:
+		match currentEdge:
+			Edges.TOP:
+				""" - Y """
+				return Vector3.RIGHT
+			Edges.BOTTOM:
+				""" + Y """
+				return Vector3.LEFT
+			Edges.LEFT:
+				""" + X """
+				return Vector3.FORWARD
+			Edges.RIGHT:
+				""" - X """
+				return Vector3.BACK
+				
+		return Vector3.ZERO
+
 var isLaneSelected : bool
 var selectedLaneStartPos : Vector2
 var selectionLocked : bool

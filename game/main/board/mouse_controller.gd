@@ -1,6 +1,8 @@
 extends Node
 class_name MouseController
 
+@onready var handler:SelectionHandler = $SelectionHandler
+
 var state = preload("res://game/resources/global/state/board_state.tres")
 var board = preload("res://game/resources/global/board/board.tres") 
 var events = preload("res://game/resources/global/event/events.tres") 
@@ -33,13 +35,13 @@ func updateMouseSelection() -> void:
 		
 		""" Skip Edge Tiles if a Selection is currently locked """
 		if onEdge(cell) && !state.selectionLocked:
-			events.selection_changed_edge.emit(cell)
+			handler.handleEdgeSelection(cell)
 		else:
-			events.selection_changed_inner.emit(cell)
+			handler.handleInnerSelection(cell)
 		
 	elif cell == Vector2(-1, -1):
 		lastSelectedCell = null
-		events.selection_changed_none.emit()
+		handler.handleNoSelection()
 		
 func getHoveredCell() -> Vector2:
 	var hit = getMouseHit()

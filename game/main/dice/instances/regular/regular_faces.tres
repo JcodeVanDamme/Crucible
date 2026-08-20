@@ -1,0 +1,86 @@
+[gd_resource type="Resource" script_class="FaceData" load_steps=16 format=3 uid="uid://buvqar4u6bfex"]
+
+[ext_resource type="Script" uid="uid://hu30644xk8uk" path="res://game/main/dice/faces/FaceData/face_data.gd" id="1_ive86"]
+[ext_resource type="Texture2D" uid="uid://cvnb7ky70lbkf" path="res://assets/CuteDice - AssetPack_v1.0/PixelDice_White.png" id="2_5cmv1"]
+[ext_resource type="Script" uid="uid://ck0k0pc4agvgo" path="res://game/main/dice/faces/numeric_face.gd" id="2_qsnti"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5b8be"]
+atlas = ExtResource("2_5cmv1")
+region = Rect2(56, 0, 28, 28)
+
+[sub_resource type="Resource" id="Resource_5cmv1"]
+script = ExtResource("2_qsnti")
+value = 3
+name = "Three"
+description = "Numeric Face with a Value of 3"
+icon = SubResource("AtlasTexture_5b8be")
+metadata/_custom_type_script = "uid://ck0k0pc4agvgo"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5cmv1"]
+atlas = ExtResource("2_5cmv1")
+region = Rect2(140, 0, 28, 28)
+
+[sub_resource type="Resource" id="Resource_0ivay"]
+script = ExtResource("2_qsnti")
+value = 6
+name = "Six"
+description = "Numeric Face with a Value of 1"
+icon = SubResource("AtlasTexture_5cmv1")
+metadata/_custom_type_script = "uid://ck0k0pc4agvgo"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jsmvc"]
+atlas = ExtResource("2_5cmv1")
+region = Rect2(84, 0, 28, 28)
+
+[sub_resource type="Resource" id="Resource_jsmvc"]
+script = ExtResource("2_qsnti")
+value = 4
+name = "Four"
+description = "Numeric Face with a Value of 4"
+icon = SubResource("AtlasTexture_jsmvc")
+metadata/_custom_type_script = "uid://ck0k0pc4agvgo"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y2y20"]
+atlas = ExtResource("2_5cmv1")
+region = Rect2(112, 0, 28, 28)
+
+[sub_resource type="Resource" id="Resource_5b8be"]
+script = ExtResource("2_qsnti")
+value = 5
+name = "Five"
+description = "Numeric Face with a Value of 5"
+icon = SubResource("AtlasTexture_y2y20")
+metadata/_custom_type_script = "uid://ck0k0pc4agvgo"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_byuvp"]
+atlas = ExtResource("2_5cmv1")
+region = Rect2(28, 0, 28, 28)
+
+[sub_resource type="Resource" id="Resource_pcvon"]
+script = ExtResource("2_qsnti")
+value = 2
+name = "Two"
+description = "Numeric Face with a Value of 2"
+icon = SubResource("AtlasTexture_byuvp")
+metadata/_custom_type_script = "uid://ck0k0pc4agvgo"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ivay"]
+atlas = ExtResource("2_5cmv1")
+region = Rect2(0, 28, 28, 28)
+
+[sub_resource type="Resource" id="Resource_qsnti"]
+script = ExtResource("2_qsnti")
+name = "One"
+description = "Numeric Face with a Value of 1"
+icon = SubResource("AtlasTexture_0ivay")
+metadata/_custom_type_script = "uid://ck0k0pc4agvgo"
+
+[resource]
+script = ExtResource("1_ive86")
+upFace = SubResource("Resource_qsnti")
+downFace = SubResource("Resource_0ivay")
+rightFace = SubResource("Resource_pcvon")
+leftFace = SubResource("Resource_5b8be")
+forwardFace = SubResource("Resource_jsmvc")
+backwardFace = SubResource("Resource_5cmv1")
+metadata/_custom_type_script = "uid://hu30644xk8uk"

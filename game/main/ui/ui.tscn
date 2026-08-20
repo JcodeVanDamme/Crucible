@@ -1,6 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://cwt2bxtuhioe7"]
+[gd_scene load_steps=8 format=3 uid="uid://cwt2bxtuhioe7"]
 
 [ext_resource type="Script" uid="uid://by1yvdawoclcr" path="res://game/main/ui/ui.gd" id="1_fyqef"]
+[ext_resource type="Script" uid="uid://bowwpdn3jjvrm" path="res://game/main/ui/face_info.gd" id="2_04ka0"]
+[ext_resource type="Script" uid="uid://du7alvrbqxbqh" path="res://game/main/ui/dice_info.gd" id="2_5tjap"]
+[ext_resource type="Script" uid="uid://70jk0bs34uv2" path="res://game/main/ui/selection_info.gd" id="2_av465"]
+[ext_resource type="Texture2D" uid="uid://cvnb7ky70lbkf" path="res://assets/CuteDice - AssetPack_v1.0/PixelDice_White.png" id="3_5tjap"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_hob2e"]
+color = Color(1, 1, 1, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_av465"]
+atlas = ExtResource("3_5tjap")
+region = Rect2(0, 0, 28, 28)
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -10,3 +21,81 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_fyqef")
+
+[node name="SelectionInfo" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -340.0
+offset_bottom = 132.0
+grow_horizontal = 0
+script = ExtResource("2_av465")
+
+[node name="DiceInfo" type="PanelContainer" parent="SelectionInfo"]
+layout_mode = 2
+script = ExtResource("2_5tjap")
+
+[node name="MarginContainer" type="MarginContainer" parent="SelectionInfo/DiceInfo"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SelectionInfo/DiceInfo/MarginContainer"]
+layout_mode = 2
+
+[node name="DiceName" type="Label" parent="SelectionInfo/DiceInfo/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"TitleLabel"
+text = "Name"
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="SelectionInfo/DiceInfo/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxLine_hob2e")
+
+[node name="MarginContainer" type="MarginContainer" parent="SelectionInfo/DiceInfo/MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 0
+
+[node name="DiceDescription" type="Label" parent="SelectionInfo/DiceInfo/MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="FaceInfo" type="PanelContainer" parent="SelectionInfo"]
+layout_mode = 2
+size_flags_vertical = 4
+script = ExtResource("2_04ka0")
+
+[node name="MarginContainer" type="MarginContainer" parent="SelectionInfo/FaceInfo"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SelectionInfo/FaceInfo/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="SelectionInfo/FaceInfo/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Current Face:"
+horizontal_alignment = 1
+
+[node name="FaceIcon" type="TextureRect" parent="SelectionInfo/FaceInfo/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_av465")
+stretch_mode = 2
+
+[node name="FaceName" type="Label" parent="SelectionInfo/FaceInfo/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"TitleLabel"
+text = "One"
+horizontal_alignment = 2

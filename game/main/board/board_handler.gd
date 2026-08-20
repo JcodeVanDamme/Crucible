@@ -13,6 +13,8 @@ func _ready() -> void:
 	)
 	events.selection_unlocked.connect(func():
 		state.previewMatrix = null
+		for action:Action in state.actionQueue:
+			action.executor.diceData.faces.resetPreview()
 	)
 	buildBoard()
 
@@ -66,6 +68,7 @@ func processDiceQueue(dices : Array) -> Array:
 		
 		""" Only differentiate if it moves off the board """
 		var action : Action
+
 		
 		""" ! Quick Workaround; Spawned die is on Edge -> dont move off board  ! """
 		if !checkBounds(newPos) && id != state.spawnedDie.id:
@@ -78,6 +81,7 @@ func processDiceQueue(dices : Array) -> Array:
 			action.type = Actions.ActionType.MOVE_OFF_BOARD
 			action.moveFrom = originalPos
 			action.moveTo = newPos
+			dice.diceData.faces.updateFaces(state.rollAxis)
 					
 		else:
 			
@@ -89,6 +93,7 @@ func processDiceQueue(dices : Array) -> Array:
 			action.type = Actions.ActionType.MOVE
 			action.moveFrom = originalPos
 			action.moveTo = newPos
+			dice.diceData.faces.updateFaces(state.rollAxis)
 			
 
 		actionQueue.append(action)

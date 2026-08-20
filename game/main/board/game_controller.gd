@@ -5,7 +5,7 @@ var state = preload("res://game/resources/global/state/board_state.tres")
 var events = preload("res://game/resources/global/event/events.tres") 
 
 @onready var diceSupplier := $DiceSupplier
-@onready var selectionHandler := $SelectionHandler
+@onready var selectionHandler := $InputHandler/MouseController/SelectionHandler
 @onready var cameraHandler := $CameraHandler
 @onready var inputHandler := $InputHandler
 @onready var dices := $Visuals/Dices
@@ -35,4 +35,3 @@ func handleTurnEnd() -> void:
 func initTurn() -> void:
 	state.selectionLocked = false
 	dices.spawnCube(diceSupplier.determineDie())
-	events.selection_changed_none.emit()

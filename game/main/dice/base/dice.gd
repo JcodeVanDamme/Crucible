@@ -31,6 +31,8 @@ func _process(delta: float) -> void:
 		
 func init(cubeId: int, baseColor: Color) -> void:
 	id = cubeId
+	diceData = diceData.duplicate(true)
+	diceData.initialize()
 	$MeshInstance3D.color = baseColor
 	$Label3D.text = str(id)
 

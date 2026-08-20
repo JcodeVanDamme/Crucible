@@ -1,0 +1,29 @@
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://ch5jd70fsnuok"]
+
+[ext_resource type="FontFile" uid="uid://brqfntltvj163" path="res://assets/font/Jupiteroid_Font_1_1/Web Open Font Format (.woff)/Jupiteroid-LightItalic.woff2" id="1_6q7ac"]
+[ext_resource type="FontFile" uid="uid://dfx4nfmqquyn7" path="res://assets/font/Jupiteroid_Font_1_1/Web Open Font Format (.woff)/Jupiteroid-Regular.woff" id="1_oujqa"]
+[ext_resource type="FontFile" uid="uid://cjppfn0105f2s" path="res://assets/font/Blazma_Font_1_10/Web Open Font Format (.woff)/Blazma-Regular.woff" id="3_6q7ac"]
+
+[resource]
+default_font = ExtResource("1_oujqa")
+FlavorLabel/base_type = &"Label"
+FlavorLabel/fonts/font = ExtResource("1_6q7ac")
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 1)
+Label/constants/line_spacing = 0
+Label/constants/outline_size = 0
+Label/constants/shadow_offset_x = 0
+Label/constants/shadow_offset_y = 0
+Label/constants/shadow_outline_size = 0
+Label/font_sizes/font_size = 16
+Label/fonts/font = ExtResource("1_oujqa")
+Label/styles/focus = null
+Label/styles/normal = null
+MarginContainer/constants/margin_bottom = 2
+MarginContainer/constants/margin_left = 10
+MarginContainer/constants/margin_right = 10
+MarginContainer/constants/margin_top = 2
+TitleLabel/base_type = &"Label"
+TitleLabel/font_sizes/font_size = 20
+TitleLabel/fonts/font = ExtResource("3_6q7ac")

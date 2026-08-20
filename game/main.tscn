@@ -34,6 +34,9 @@ script = ExtResource("5_dp3pf")
 [node name="MouseController" type="Node" parent="BoardRoot/GameController/InputHandler"]
 script = ExtResource("9_lx3aj")
 
+[node name="SelectionHandler" type="Node" parent="BoardRoot/GameController/InputHandler/MouseController"]
+script = ExtResource("10_ioaqv")
+
 [node name="CameraHandler" type="Node3D" parent="BoardRoot/GameController"]
 script = ExtResource("10_itumj")
 
@@ -62,9 +65,6 @@ script = ExtResource("6_xkbyp")
 
 [node name="Tiles" type="Node3D" parent="BoardRoot/GameController/Visuals"]
 script = ExtResource("7_wjctj")
-
-[node name="SelectionHandler" type="Node" parent="BoardRoot/GameController"]
-script = ExtResource("10_ioaqv")
 
 [node name="DiceSupplier" type="Node" parent="BoardRoot/GameController"]
 script = ExtResource("6_dp3pf")

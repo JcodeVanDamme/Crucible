@@ -24,6 +24,10 @@ Actions="*res://game/resources/global/action/actions.gd"
 window/size/viewport_width=960
 window/size/viewport_height=540
 
+[gui]
+
+theme/custom="uid://ch5jd70fsnuok"
+
 [input]
 
 cycle_left={

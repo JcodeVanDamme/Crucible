@@ -14,7 +14,7 @@ func _init() -> void:
 		var duration:float = MOVE_DURATION + queuePos * INCREASE
 		
 		move(moveTo, duration)
-		roll(duration, false)
+		roll(duration, Basis(state.rollAxis, PI / 2.0))
 		
 		executor.mesh.setColor(colors.actionMoved)
 		
@@ -23,7 +23,7 @@ func _init() -> void:
 		var duration = MOVE_DURATION + (state.actionQueue.size() - 1 - queuePos) * INCREASE
 		
 		move(moveFrom, duration)
-		roll(duration, true)
+		roll(duration, Basis(state.rollAxis, -PI / 2.0))
 		
 		executor.mesh.setColor(executor.mesh.color)
 	
@@ -43,16 +43,10 @@ func move(pos:Vector2, duration:float) -> void:
 		duration
 	)
 	
-func roll(duration:float, reverse:bool) -> void:
+func roll(duration:float, rotation:Basis) -> void:
 	var startBasis:Basis = executor.mesh.targetBasis
-	var rot:Basis
 	
-	if !reverse:
-		rot = Basis(executor.mesh.rollAxis, PI / 2.0)
-	else:
-		rot = Basis(executor.mesh.rollAxis, -PI / 2.0)
-	
-	executor.mesh.targetBasis = rot * startBasis
+	executor.mesh.targetBasis = rotation * startBasis
 	
 	executor.tween.parallel().tween_method(
 		func(t):
